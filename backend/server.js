@@ -1,3 +1,4 @@
+import { prototypeEmergencyLocations } from "./data/emergencyLocationsData.js";
 import { prototypeReports } from "./data/reportsData.js";
 import { prototypeLocations } from "./data/locationsData.js";
 import express from "express";
@@ -35,6 +36,14 @@ app.get("/api/locations", (req, res) => {
     source: "prototype_demo_data",
     count: prototypeLocations.length,
     locations: prototypeLocations
+  });
+});
+
+app.get("/api/emergency-locations", (req, res) => {
+  res.json({
+    source: "prototype_demo_data",
+    count: prototypeEmergencyLocations.length,
+    locations: prototypeEmergencyLocations
   });
 });
 
