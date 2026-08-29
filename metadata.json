@@ -1,5 +1,5 @@
 {
-  "name": "AegisLocal - Hyperlocal Flood Intelligence",
+  "name": "PravahAI - Hyperlocal Flood Intelligence",
   "description": "AI-Assisted Hyperlocal Flood Intelligence & Risk-Aware Decision System for Chennai, Tamil Nadu ( Disaster Management)",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
