@@ -1,3 +1,4 @@
+import { prototypeReports } from "./data/reportsData.js";
 import { prototypeLocations } from "./data/locationsData.js";
 import express from "express";
 import cors from "cors";
@@ -34,6 +35,39 @@ app.get("/api/locations", (req, res) => {
     source: "prototype_demo_data",
     count: prototypeLocations.length,
     locations: prototypeLocations
+  });
+});
+
+app.get("/api/reports", (req, res) => {
+  res.json({
+    source: "prototype_in_memory_data",
+    count: prototypeReports.length,
+    reports: prototypeReports
+  });
+});
+
+app.post("/api/reports", (req, res) => {
+  const { location, description, severity } = req.body;
+
+  if (!location || !description) {
+    return res.status(400).json({
+      error: "location and description are required"
+    });
+  }
+
+  const report = {
+    id: `report-${Date.now()}`,
+    location,
+    description,
+    severity: severity || "UNKNOWN",
+    submitted_at: new Date().toISOString()
+  };
+
+  prototypeReports.push(report);
+
+  res.status(201).json({
+    message: "Prototype flood report submitted successfully",
+    report
   });
 });
 
