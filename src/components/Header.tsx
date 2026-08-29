@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ShieldAlert,
   MapPin,
   Radio,
   Sparkles,
@@ -8,6 +7,8 @@ import {
   AlertTriangle,
   Play,
 } from 'lucide-react';
+
+import pravahaiLogo from '../assets/pravahai-logo.png';
 
 import { ChennaiNeighbourhood } from '../types';
 import { CHENNAI_NEIGHBOURHOODS } from '../data/chennaiData';
@@ -116,21 +117,15 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <div className="flex items-center gap-3">
 
-            {/* Logo */}
+            {/* PravahAI Logo */}
             <div
               className="
-                relative
                 flex
                 items-center
                 justify-center
                 w-10
                 h-10
-                rounded-sm
-                bg-[#1A1A1A]
-                text-[#F4F1EE]
-                shadow-sm
-                border
-                border-[#1A1A1A]
+                shrink-0
 
                 transition-all
                 duration-300
@@ -138,43 +133,15 @@ export const Header: React.FC<HeaderProps> = ({
 
                 hover:scale-110
                 hover:-translate-y-0.5
-                hover:shadow-lg
-
-                active:scale-95
               "
             >
-              <ShieldAlert
+              <img
+                src={pravahaiLogo}
+                alt="PravahAI Logo"
                 className="
-                  w-5
-                  h-5
-                  text-[#A67C52]
-
-                  transition-transform
-                  duration-300
-                  ease-out
-
-                  hover:scale-110
-                  hover:rotate-6
-                "
-              />
-
-              {/* Small status dot */}
-              <div
-                className="
-                  absolute
-                  -bottom-0.5
-                  -right-0.5
-                  w-2.5
-                  h-2.5
-                  bg-[#A67C52]
-                  rounded-full
-                  border
-                  border-[#F4F1EE]
-
-                  transition-transform
-                  duration-300
-
-                  hover:scale-125
+                  w-full
+                  h-full
+                  object-contain
                 "
               />
             </div>
@@ -443,7 +410,6 @@ export const Header: React.FC<HeaderProps> = ({
                 {selectedNeighbourhood.baseRisk}
               </span>
 
-              {/* Dropdown Arrow */}
               <ChevronDown
                 className={`
                   w-3.5
@@ -458,9 +424,7 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </button>
 
-            {/* =================================================
-                DROPDOWN MENU
-            ================================================== */}
+            {/* Dropdown Menu */}
             {dropdownOpen && (
               <div
                 className="
@@ -486,7 +450,6 @@ export const Header: React.FC<HeaderProps> = ({
                   duration-150
                 "
               >
-                {/* Dropdown Heading */}
                 <div
                   className="
                     text-[9px]
@@ -505,7 +468,6 @@ export const Header: React.FC<HeaderProps> = ({
                   Select Chennai Ward / Basin
                 </div>
 
-                {/* Neighbourhoods */}
                 {CHENNAI_NEIGHBOURHOODS.map((item) => (
                   <button
                     type="button"
@@ -559,9 +521,6 @@ export const Header: React.FC<HeaderProps> = ({
                           font-serif
                           font-semibold
                           text-[#1A1A1A]
-
-                          transition-colors
-                          duration-150
                         "
                       >
                         {item.name}
@@ -578,7 +537,6 @@ export const Header: React.FC<HeaderProps> = ({
                       </div>
                     </div>
 
-                    {/* Score */}
                     <span
                       className={`
                         text-[9px]
@@ -588,11 +546,6 @@ export const Header: React.FC<HeaderProps> = ({
                         font-bold
                         uppercase
                         tracking-wider
-
-                        transition-transform
-                        duration-150
-
-                        group-hover:scale-105
 
                         ${
                           item.baseRisk === 'CRITICAL'
@@ -679,12 +632,6 @@ export const Header: React.FC<HeaderProps> = ({
                 w-3.5
                 h-3.5
                 text-amber-200
-
-                transition-all
-                duration-300
-
-                group-hover:rotate-12
-                group-hover:scale-110
               "
             />
 
@@ -743,11 +690,6 @@ export const Header: React.FC<HeaderProps> = ({
                 text-[#A67C52]
 
                 animate-pulse
-
-                transition-transform
-                duration-200
-
-                group-hover:scale-125
               "
             />
 
@@ -795,16 +737,9 @@ export const Header: React.FC<HeaderProps> = ({
                 w-4
                 h-4
                 text-[#A67C52]
-
-                transition-all
-                duration-200
-
-                group-hover:scale-110
-                group-hover:rotate-3
               "
             />
 
-            {/* Alert Count */}
             {unreadAlertCount > 0 && (
               <span
                 className="
