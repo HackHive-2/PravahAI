@@ -1,3 +1,4 @@
+import { prototypeLocations } from "./data/locationsData.js";
 import express from "express";
 import cors from "cors";
 import { getPrototypeRisk } from "./data/riskData.js";
@@ -26,6 +27,14 @@ app.get("/api/risk", (req, res) => {
   const location = req.query.location || "Chennai";
   const risk = getPrototypeRisk(location);
   res.json(risk);
+});
+
+app.get("/api/locations", (req, res) => {
+  res.json({
+    source: "prototype_demo_data",
+    count: prototypeLocations.length,
+    locations: prototypeLocations
+  });
 });
 
 app.listen(PORT, () => {
