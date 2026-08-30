@@ -234,33 +234,7 @@ export const Header: React.FC<HeaderProps> = ({
                   PravahAI
                 </span>
 
-                {/* HackHive badge */}
-                <span
-                  className="
-                    px-1.5
-                    py-0.5
-
-                    text-[8px]
-
-                    font-sans
-                    font-bold
-
-                    uppercase
-                    tracking-widest
-
-                    bg-[#DDF3F3]
-
-                    text-[#087F8C]
-
-                    border
-                    border-[#087F8C]/25
-
-                    rounded
-                  "
-                >
-                  2026 HackHive
-                </span>
-
+                
               </div>
 
               <p

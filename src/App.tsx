@@ -391,12 +391,12 @@ export function App() {
       className="
         min-h-screen
         w-full
-        bg-[#F4F1EE]
+        bg-[#F1F7FA]
         text-[#1A1A1A]
         flex
         flex-col
         font-['Plus_Jakarta_Sans',sans-serif]
-        selection:bg-[#A67C52]
+        selection:bg-[#087F8C]
         selection:text-white
         overflow-x-hidden
       "
@@ -463,7 +463,7 @@ export function App() {
           border-x
           border-[#1A1A1A]/10
 
-          bg-[#F4F1EE]
+          bg-[#F1F7FA]
 
           min-w-0
         "
@@ -481,7 +481,7 @@ export function App() {
 
             shrink-0
 
-            bg-[#F4F1EE]
+            bg-[#E7F1F5]
 
             border-b
             lg:border-b-0
@@ -514,7 +514,7 @@ export function App() {
             min-w-0
             w-full
 
-            bg-[#F4F1EE]
+            bg-[#F1F7FA]
 
             p-4
             sm:p-5
@@ -709,17 +709,6 @@ export function App() {
             <span>
               PravahAI • AI-Assisted
               Hyperlocal Flood Intelligence
-            </span>
-
-            <span
-              className="
-                font-bold
-                uppercase
-                tracking-[0.18em]
-                text-[#8B5E3C]
-              "
-            >
-              2026 HackHive • SIH
             </span>
           </footer>
         </main>
