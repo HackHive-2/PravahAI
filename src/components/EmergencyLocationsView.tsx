@@ -129,21 +129,21 @@ export const EmergencyLocationsView: React.FC<
     switch (status) {
       case 'OPEN':
         return (
-          <span className="px-2 py-0.5 rounded-sm text-[9px] font-sans font-bold uppercase tracking-wider bg-[#2D5A43]/10 text-[#2D5A43] border border-[#2D5A43]/30">
+          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#2D5A43]/10 text-[#2D5A43] border border-[#2D5A43]/30">
             OPEN &bull; ACCEPTING
           </span>
         );
 
       case 'READY':
         return (
-          <span className="px-2 py-0.5 rounded-sm text-[9px] font-sans font-bold uppercase tracking-wider bg-[#8B5E3C]/10 text-[#8B5E3C] border border-[#8B5E3C]/30">
+          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#8B5E3C]/10 text-[#8B5E3C] border border-[#8B5E3C]/30">
             STANDBY READY
           </span>
         );
 
       case 'HIGH_CAPACITY':
         return (
-          <span className="px-2 py-0.5 rounded-sm text-[9px] font-sans font-bold uppercase tracking-wider bg-[#C97A2C]/10 text-[#C97A2C] border border-[#C97A2C]/30">
+          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#C97A2C]/10 text-[#C97A2C] border border-[#C97A2C]/30">
             NEAR CAPACITY
           </span>
         );
@@ -180,7 +180,7 @@ export const EmergencyLocationsView: React.FC<
     <div className="space-y-6 pb-12">
 
       {/* Header */}
-      <div className="bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-sm">
+      <div className="bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-xl">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
 
           <div>
@@ -200,7 +200,7 @@ export const EmergencyLocationsView: React.FC<
             </p>
           </div>
 
-          <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/15 text-xs text-[#1A1A1A] space-y-1 rounded-sm max-w-xs">
+          <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/15 text-xs text-[#1A1A1A] space-y-1 rounded-xl max-w-xs">
             <div className="text-[9px] font-sans uppercase font-bold text-[#8B5E3C] tracking-wider">
               Emergency Helplines
             </div>
@@ -214,7 +214,7 @@ export const EmergencyLocationsView: React.FC<
       </div>
 
       {/* Filters */}
-      <div className="bg-white border border-[#1A1A1A]/15 p-4 shadow-sm rounded-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="bg-white border border-[#1A1A1A]/15 p-4 shadow-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
 
         <div className="flex flex-wrap items-center gap-1.5">
           {categories.map((category) => (
@@ -223,7 +223,7 @@ export const EmergencyLocationsView: React.FC<
               onClick={() =>
                 setSelectedCategory(category.id)
               }
-              className={`px-3 py-1.5 rounded-sm text-xs font-sans font-bold uppercase tracking-wider transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-sans font-bold uppercase tracking-wider transition-all ${
                 selectedCategory === category.id
                   ? 'bg-[#1A1A1A] text-[#F4F1EE]'
                   : 'bg-[#FAF8F5] text-[#1A1A1A]/70 hover:bg-[#EAE6E1] border border-[#1A1A1A]/15'
@@ -248,7 +248,7 @@ export const EmergencyLocationsView: React.FC<
               setSearchQuery(e.target.value)
             }
             placeholder="Search facility name / ward..."
-            className="w-full pl-8 pr-3 py-1.5 bg-[#FAF8F5] border border-[#1A1A1A]/20 text-xs font-sans text-[#1A1A1A] placeholder-[#1A1A1A]/40 focus:outline-none focus:border-[#A67C52] rounded-sm"
+            className="w-full pl-8 pr-3 py-1.5 bg-[#FAF8F5] border border-[#1A1A1A]/20 text-xs font-sans text-[#1A1A1A] placeholder-[#1A1A1A]/40 focus:outline-none focus:border-[#A67C52] rounded-xl"
           />
         </div>
 
@@ -256,7 +256,7 @@ export const EmergencyLocationsView: React.FC<
 
       {/* Loading */}
       {loading && (
-        <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center shadow-sm rounded-sm">
+        <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center shadow-sm rounded-xl">
           <p className="text-sm font-serif font-bold text-[#1A1A1A]">
             Loading emergency locations from PravahAI backend...
           </p>
@@ -265,7 +265,7 @@ export const EmergencyLocationsView: React.FC<
 
       {/* Error */}
       {error && (
-        <div className="bg-white border border-red-500/30 p-6 text-center shadow-sm rounded-sm">
+        <div className="bg-white border border-red-500/30 p-6 text-center shadow-sm rounded-xl">
           <p className="text-sm font-serif font-bold text-red-700">
             {error}
           </p>
@@ -280,7 +280,7 @@ export const EmergencyLocationsView: React.FC<
           <div className="lg:col-span-7 space-y-3">
 
             {filteredFacilities.length === 0 && (
-              <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center rounded-sm">
+              <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center rounded-xl">
                 No emergency facilities found.
               </div>
             )}
@@ -296,7 +296,7 @@ export const EmergencyLocationsView: React.FC<
                     onClick={() =>
                       setSelectedFacility(facility)
                     }
-                    className={`cursor-pointer bg-white p-5 transition-all border shadow-sm rounded-sm flex flex-col justify-between ${
+                    className={`cursor-pointer bg-white p-5 transition-all border shadow-sm rounded-xl flex flex-col justify-between ${
                       isSelected
                         ? 'border-[#A67C52] ring-1 ring-[#A67C52]'
                         : 'border-[#1A1A1A]/15 hover:border-[#1A1A1A]/40'
@@ -309,7 +309,7 @@ export const EmergencyLocationsView: React.FC<
 
                         <div className="flex items-start gap-3">
 
-                          <div className="p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-sm shrink-0">
+                          <div className="p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg shrink-0">
                             {getCategoryIcon(
                               facility.category
                             )}
@@ -362,7 +362,7 @@ export const EmergencyLocationsView: React.FC<
 
                       </div>
 
-                      <div className="grid grid-cols-3 gap-2 my-3 p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-sm text-xs">
+                      <div className="grid grid-cols-3 gap-2 my-3 p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg text-xs">
 
                         <div>
                           <span className="text-[9px] font-sans uppercase font-bold text-[#1A1A1A]/50 block">
@@ -434,7 +434,7 @@ export const EmergencyLocationsView: React.FC<
           </div>
 
           {/* Selected Facility */}
-          <div className="lg:col-span-5 bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-sm flex flex-col justify-between space-y-4">
+          <div className="lg:col-span-5 bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-xl flex flex-col justify-between space-y-4">
 
             {selectedFacility ? (
               <>
@@ -468,7 +468,7 @@ export const EmergencyLocationsView: React.FC<
                       </p>
                     </div>
 
-                    <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-sm space-y-2 text-xs">
+                    <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg space-y-2 text-xs">
 
                       <div className="flex items-center justify-between font-sans">
                         <span className="text-[#1A1A1A]/60">
@@ -519,7 +519,7 @@ export const EmergencyLocationsView: React.FC<
                         );
                       }
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#1A1A1A] hover:bg-[#333333] text-[#F4F1EE] text-xs font-sans font-bold uppercase tracking-wider rounded-sm shadow-sm transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#1A1A1A] hover:bg-[#333333] text-[#F4F1EE] text-xs font-sans font-bold uppercase tracking-wider rounded-xl shadow-sm transition-all"
                   >
                     <Navigation className="w-4 h-4 text-[#A67C52]" />
 
