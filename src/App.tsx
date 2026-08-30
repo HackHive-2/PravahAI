@@ -11,48 +11,72 @@ import { EmergencyLocationsView } from './components/EmergencyLocationsView';
 import { OfficialAlertsView } from './components/OfficialAlertsView';
 import { AdminDashboardView } from './components/AdminDashboardView';
 import { DataMethodologyView } from './components/DataMethodologyView';
+
 import {
   NotificationToast,
-  ToastMessage
+  ToastMessage,
 } from './components/NotificationToast';
 
 import {
   ChennaiNeighbourhood,
   RiskCell,
-  CitizenReport
+  CitizenReport,
 } from './types';
 
 import {
   CHENNAI_NEIGHBOURHOODS,
   INITIAL_RISK_CELLS,
   INITIAL_CITIZEN_REPORTS,
-  SIH_DEMO_TOUR_STEPS
+  SIH_DEMO_TOUR_STEPS,
 } from './data/chennaiData';
 
 import { apiService } from './services/riskEngine';
 import { submitReportToBackend } from './services/backendApi';
 
 export function App() {
-  // Global State
-  const [selectedNeighbourhood, setSelectedNeighbourhood] =
-    useState<ChennaiNeighbourhood>(CHENNAI_NEIGHBOURHOODS[0]);
+  // =========================================================
+  // GLOBAL STATE
+  // =========================================================
 
-  const [activeTab, setActiveTab] = useState<NavTabId>('overview');
+  const [selectedNeighbourhood, setSelectedNeighbourhood] =
+    useState<ChennaiNeighbourhood>(
+      CHENNAI_NEIGHBOURHOODS[0]
+    );
+
+  const [activeTab, setActiveTab] =
+    useState<NavTabId>('overview');
 
   const [activeRiskCell, setActiveRiskCell] =
-    useState<RiskCell>(INITIAL_RISK_CELLS[0]);
+    useState<RiskCell>(
+      INITIAL_RISK_CELLS[0]
+    );
 
   const [citizenReports, setCitizenReports] =
-    useState<CitizenReport[]>(INITIAL_CITIZEN_REPORTS);
+    useState<CitizenReport[]>(
+      INITIAL_CITIZEN_REPORTS
+    );
 
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [toasts, setToasts] =
+    useState<ToastMessage[]>([]);
 
   const [highlightRouteId, setHighlightRouteId] =
-    useState<'FASTEST' | 'LOWER_RISK' | 'ALL'>('ALL');
+    useState<
+      'FASTEST' | 'LOWER_RISK' | 'ALL'
+    >('ALL');
 
-  // SIH 2-3 Minute Tour State
-  const [tourActive, setTourActive] = useState<boolean>(false);
-  const [tourStepIndex, setTourStepIndex] = useState<number>(0);
+  // =========================================================
+  // SIH DEMO TOUR STATE
+  // =========================================================
+
+  const [tourActive, setTourActive] =
+    useState<boolean>(false);
+
+  const [tourStepIndex, setTourStepIndex] =
+    useState<number>(0);
+
+  // =========================================================
+  // TOAST HELPERS
+  // =========================================================
 
   const addToast = (
     title: string,
@@ -63,62 +87,93 @@ export function App() {
       id: `toast-${Date.now()}-${Math.random()}`,
       title,
       message,
-      type
+      type,
     };
 
-    setToasts((prev) => [...prev, newToast]);
+    setToasts((prev) => [
+      ...prev,
+      newToast,
+    ]);
 
     setTimeout(() => {
       setToasts((prev) =>
-        prev.filter((t) => t.id !== newToast.id)
+        prev.filter(
+          (toast) =>
+            toast.id !== newToast.id
+        )
       );
     }, 4500);
   };
 
-  const handleDismissToast = (id: string) => {
+  const handleDismissToast = (
+    id: string
+  ) => {
     setToasts((prev) =>
-      prev.filter((t) => t.id !== id)
+      prev.filter(
+        (toast) => toast.id !== id
+      )
     );
   };
 
-  // Sync active risk cell when neighbourhood changes
+  // =========================================================
+  // NEIGHBOURHOOD SELECTION
+  // =========================================================
+
   const handleSelectNeighbourhood = (
-    n: ChennaiNeighbourhood
+    neighbourhood: ChennaiNeighbourhood
   ) => {
-    setSelectedNeighbourhood(n);
+    setSelectedNeighbourhood(
+      neighbourhood
+    );
 
     const matchedCell =
-      INITIAL_RISK_CELLS.find((c) =>
-        c.areaName.toLowerCase().includes(
-          n.name.toLowerCase()
-        )
+      INITIAL_RISK_CELLS.find((cell) =>
+        cell.areaName
+          .toLowerCase()
+          .includes(
+            neighbourhood.name.toLowerCase()
+          )
       ) || INITIAL_RISK_CELLS[0];
 
     setActiveRiskCell(matchedCell);
 
     addToast(
-      `Area Selected: ${n.name}`,
-      `Loaded hyperlocal risk model (${matchedCell.riskScore}/100 - ${matchedCell.riskLevel}) for ${n.name}.`,
+      `Area Selected: ${neighbourhood.name}`,
+      `Loaded hyperlocal risk model (${matchedCell.riskScore}/100 - ${matchedCell.riskLevel}) for ${neighbourhood.name}.`,
       'info'
     );
   };
 
-  const handleSelectCell = (cell: RiskCell) => {
+  // =========================================================
+  // RISK CELL SELECTION
+  // =========================================================
+
+  const handleSelectCell = (
+    cell: RiskCell
+  ) => {
     setActiveRiskCell(cell);
 
-    const matchedN =
-      CHENNAI_NEIGHBOURHOODS.find((n) =>
-        cell.areaName.toLowerCase().includes(
-          n.name.toLowerCase()
-        )
+    const matchedNeighbourhood =
+      CHENNAI_NEIGHBOURHOODS.find(
+        (neighbourhood) =>
+          cell.areaName
+            .toLowerCase()
+            .includes(
+              neighbourhood.name.toLowerCase()
+            )
       );
 
-    if (matchedN) {
-      setSelectedNeighbourhood(matchedN);
+    if (matchedNeighbourhood) {
+      setSelectedNeighbourhood(
+        matchedNeighbourhood
+      );
     }
   };
 
-  // Submit citizen report to the REAL Express backend
+  // =========================================================
+  // CITIZEN REPORT SUBMISSION
+  // =========================================================
+
   const handleSubmitCitizenReport = async (
     reportData: Omit<
       CitizenReport,
@@ -130,33 +185,37 @@ export function App() {
     >
   ) => {
     try {
-      const backendResponse = await submitReportToBackend({
-        location: reportData.areaName,
-        description: reportData.description,
-        severity: reportData.reportedSeverity
-      });
+      const backendResponse =
+        await submitReportToBackend({
+          location: reportData.areaName,
+          description:
+            reportData.description,
+          severity:
+            reportData.reportedSeverity,
+        });
 
-      // Create the full frontend CitizenReport object
-      // so the existing UI continues to work.
       const createdReport: CitizenReport = {
         ...reportData,
         id: backendResponse.report.id,
-        timestamp: backendResponse.report.submitted_at,
+        timestamp:
+          backendResponse.report.submitted_at,
         evidenceConfidence: 'MODERATE',
         citizenEvidenceScore: 50,
-        verificationStatus: 'PENDING'
+        verificationStatus: 'PENDING',
       };
 
       setCitizenReports((prev) => [
         createdReport,
-        ...prev
+        ...prev,
       ]);
 
-      // Refresh active cell citizen score
+      // Refresh active cell score
       if (
         activeRiskCell.areaName
           .toLowerCase()
-          .includes(createdReport.areaName.toLowerCase())
+          .includes(
+            createdReport.areaName.toLowerCase()
+          )
       ) {
         setActiveRiskCell((prev) => ({
           ...prev,
@@ -167,7 +226,7 @@ export function App() {
           riskScore: Math.min(
             100,
             prev.riskScore + 2
-          )
+          ),
         }));
       }
 
@@ -177,7 +236,10 @@ export function App() {
         'success'
       );
     } catch (error) {
-      console.error('Backend report submission failed:', error);
+      console.error(
+        'Backend report submission failed:',
+        error
+      );
 
       addToast(
         'Report Submission Failed',
@@ -189,58 +251,74 @@ export function App() {
     }
   };
 
-  // Verifying citizen report in Admin queue
-  // Still uses the prototype frontend service for now.
+  // =========================================================
+  // ADMIN REPORT VERIFICATION
+  // =========================================================
+
   const handleVerifyReport = async (
     reportId: string,
     status: 'VERIFIED' | 'REJECTED'
   ) => {
-    const updated = await apiService.verifyReport(
-      reportId,
-      status
-    );
-
-    if (updated) {
-      setCitizenReports((prev) =>
-        prev.map((r) =>
-          r.id === reportId
-            ? {
-                ...r,
-                verificationStatus: status
-              }
-            : r
-        )
+    const updated =
+      await apiService.verifyReport(
+        reportId,
+        status
       );
 
-      if (status === 'VERIFIED') {
-        addToast(
-          'Citizen Report Verified',
-          `Report ${reportId} marked as OFFICIAL VERIFIED by responder. Local GIS evidence reliability upgraded to HIGH.`,
-          'success'
-        );
-      } else {
-        addToast(
-          'Citizen Report Rejected',
-          `Report ${reportId} rejected due to insufficient corroboration or invalid terrain context.`,
-          'warning'
-        );
-      }
+    if (!updated) {
+      return;
+    }
+
+    setCitizenReports((prev) =>
+      prev.map((report) =>
+        report.id === reportId
+          ? {
+              ...report,
+              verificationStatus: status,
+            }
+          : report
+      )
+    );
+
+    if (status === 'VERIFIED') {
+      addToast(
+        'Citizen Report Verified',
+        `Report ${reportId} marked as OFFICIAL VERIFIED by responder. Local GIS evidence reliability upgraded to HIGH.`,
+        'success'
+      );
+    } else {
+      addToast(
+        'Citizen Report Rejected',
+        `Report ${reportId} rejected due to insufficient corroboration or invalid terrain context.`,
+        'warning'
+      );
     }
   };
 
-  // Tour Step Synchronization
+  // =========================================================
+  // SIH TOUR SYNCHRONIZATION
+  // =========================================================
+
   useEffect(() => {
-    if (!tourActive) return;
+    if (!tourActive) {
+      return;
+    }
 
     const currentTourStep =
-      SIH_DEMO_TOUR_STEPS[tourStepIndex];
+      SIH_DEMO_TOUR_STEPS[
+        tourStepIndex
+      ];
 
-    if (!currentTourStep) return;
+    if (!currentTourStep) {
+      return;
+    }
 
-    // Switch view
-    setActiveTab(currentTourStep.targetView);
+    // Change active screen
+    setActiveTab(
+      currentTourStep.targetView
+    );
 
-    // Contextual updates per step
+    // Keep presentation focused on Velachery
     if (
       tourStepIndex === 1 ||
       tourStepIndex === 2 ||
@@ -248,183 +326,415 @@ export function App() {
       tourStepIndex === 4 ||
       tourStepIndex === 5
     ) {
-      const vel = CHENNAI_NEIGHBOURHOODS[0];
+      const velachery =
+        CHENNAI_NEIGHBOURHOODS[0];
 
-      setSelectedNeighbourhood(vel);
-      setActiveRiskCell(INITIAL_RISK_CELLS[0]);
-    } else if (
+      setSelectedNeighbourhood(
+        velachery
+      );
+
+      setActiveRiskCell(
+        INITIAL_RISK_CELLS[0]
+      );
+    }
+
+    // Route presentation
+    if (
       tourStepIndex === 6 ||
       tourStepIndex === 7
     ) {
       setHighlightRouteId('ALL');
     }
-  }, [tourStepIndex, tourActive]);
+  }, [
+    tourStepIndex,
+    tourActive,
+  ]);
+
+  // =========================================================
+  // COUNTERS
+  // =========================================================
 
   const pendingReportsCount =
     citizenReports.filter(
-      (r) => r.verificationStatus === 'PENDING'
+      (report) =>
+        report.verificationStatus ===
+        'PENDING'
     ).length;
 
   const criticalZonesCount =
     INITIAL_RISK_CELLS.filter(
-      (c) => c.riskLevel === 'CRITICAL'
+      (cell) =>
+        cell.riskLevel === 'CRITICAL'
     ).length + 6;
 
+  // =========================================================
+  // NAVIGATION HELPER
+  // =========================================================
+
+  const navigateToTab = (
+    tab: NavTabId
+  ) => {
+    setActiveTab(tab);
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // =========================================================
+  // APPLICATION UI
+  // =========================================================
+
   return (
-    <div className="min-h-screen bg-[#F4F1EE] text-[#1A1A1A] flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-[#A67C52] selection:text-white">
+    <div
+      className="
+        min-h-screen
+        w-full
+        bg-[#F4F1EE]
+        text-[#1A1A1A]
+        flex
+        flex-col
+        font-['Plus_Jakarta_Sans',sans-serif]
+        selection:bg-[#A67C52]
+        selection:text-white
+        overflow-x-hidden
+      "
+    >
+      {/* =====================================================
+          HEADER
+      ====================================================== */}
 
       <Header
-        selectedNeighbourhood={selectedNeighbourhood}
-        onSelectNeighbourhood={handleSelectNeighbourhood}
+        selectedNeighbourhood={
+          selectedNeighbourhood
+        }
+        onSelectNeighbourhood={
+          handleSelectNeighbourhood
+        }
         tourActive={tourActive}
-        onToggleTour={() => setTourActive(!tourActive)}
+        onToggleTour={() =>
+          setTourActive(
+            (prev) => !prev
+          )
+        }
         unreadAlertCount={2}
-        onOpenAlerts={() => setActiveTab('alerts')}
-        onOpenMethodology={() => setActiveTab('methodology')}
+        onOpenAlerts={() =>
+          navigateToTab('alerts')
+        }
+        onOpenMethodology={() =>
+          navigateToTab('methodology')
+        }
       />
+
+      {/* =====================================================
+          SIH PRESENTATION BAR
+      ====================================================== */}
 
       {tourActive && (
         <DemoTourBar
-          currentStepIndex={tourStepIndex}
-          onSetStepIndex={setTourStepIndex}
-          onClose={() => setTourActive(false)}
+          currentStepIndex={
+            tourStepIndex
+          }
+          onSetStepIndex={
+            setTourStepIndex
+          }
+          onClose={() =>
+            setTourActive(false)
+          }
         />
       )}
 
-      <div className="flex-1 flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto border-x border-[#1A1A1A]/10 bg-[#F4F1EE]">
+      {/* =====================================================
+          MAIN APPLICATION FRAME
+      ====================================================== */}
 
-        <Sidebar
-          activeTab={activeTab}
-          onSelectTab={(tab) => {
-            setActiveTab(tab);
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          }}
-          pendingReportsCount={pendingReportsCount}
-          criticalZonesCount={criticalZonesCount}
-        />
+      <div
+        className="
+          flex-1
+          w-full
+          max-w-[1600px]
+          mx-auto
 
-        <main className="flex-1 p-4 lg:p-8 overflow-y-auto max-w-full bg-[#F4F1EE]">
+          flex
+          flex-col
+          lg:flex-row
+
+          border-x
+          border-[#1A1A1A]/10
+
+          bg-[#F4F1EE]
+
+          min-w-0
+        "
+      >
+        {/* =================================================
+            SIDEBAR
+        ================================================== */}
+
+        <aside
+          className="
+            w-full
+            lg:w-72
+            lg:min-w-72
+            lg:max-w-72
+
+            shrink-0
+
+            bg-[#F4F1EE]
+
+            border-b
+            lg:border-b-0
+            lg:border-r
+
+            border-[#1A1A1A]/15
+
+            min-w-0
+          "
+        >
+          <Sidebar
+            activeTab={activeTab}
+            onSelectTab={navigateToTab}
+            pendingReportsCount={
+              pendingReportsCount
+            }
+            criticalZonesCount={
+              criticalZonesCount
+            }
+          />
+        </aside>
+
+        {/* =================================================
+            MAIN CONTENT
+        ================================================== */}
+
+        <main
+          className="
+            flex-1
+            min-w-0
+            w-full
+
+            bg-[#F4F1EE]
+
+            p-4
+            sm:p-5
+            lg:p-8
+
+            overflow-x-hidden
+          "
+        >
+          {/* =============================================
+              OVERVIEW
+          ============================================== */}
 
           {activeTab === 'overview' && (
             <OverviewView
-              selectedNeighbourhood={selectedNeighbourhood}
-              onSelectNeighbourhood={handleSelectNeighbourhood}
-              activeRiskCell={activeRiskCell}
-              onNavigateTab={(tab) => {
-                setActiveTab(tab);
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
-              onSelectCell={handleSelectCell}
+              selectedNeighbourhood={
+                selectedNeighbourhood
+              }
+              onSelectNeighbourhood={
+                handleSelectNeighbourhood
+              }
+              activeRiskCell={
+                activeRiskCell
+              }
+              onNavigateTab={(tab) =>
+                navigateToTab(tab)
+              }
+              onSelectCell={
+                handleSelectCell
+              }
             />
           )}
+
+          {/* =============================================
+              RISK MAP
+          ============================================== */}
 
           {activeTab === 'map' && (
             <RiskMapView
-              activeCell={activeRiskCell}
-              onSelectCell={handleSelectCell}
-              citizenReports={citizenReports}
-              onNavigateTab={(tab) => {
-                setActiveTab(tab);
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
-              highlightRouteId={highlightRouteId}
+              activeCell={
+                activeRiskCell
+              }
+              onSelectCell={
+                handleSelectCell
+              }
+              citizenReports={
+                citizenReports
+              }
+              onNavigateTab={(tab) =>
+                navigateToTab(tab)
+              }
+              highlightRouteId={
+                highlightRouteId
+              }
             />
           )}
+
+          {/* =============================================
+              ROUTE PLANNER
+          ============================================== */}
 
           {activeTab === 'route' && (
             <RoutePlannerView
-              onInspectRouteOnMap={(rId) => {
-                setHighlightRouteId(rId);
-                setActiveTab('map');
+              onInspectRouteOnMap={(
+                routeId
+              ) => {
+                setHighlightRouteId(
+                  routeId
+                );
 
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
+                navigateToTab('map');
               }}
             />
           )}
+
+          {/* =============================================
+              CITIZEN REPORT
+          ============================================== */}
 
           {activeTab === 'report' && (
             <CitizenReportView
-              onSubmitReport={handleSubmitCitizenReport}
-              onNavigateToMap={() => {
-                setActiveTab('map');
-
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
+              onSubmitReport={
+                handleSubmitCitizenReport
+              }
+              onNavigateToMap={() =>
+                navigateToTab('map')
+              }
             />
           )}
+
+          {/* =============================================
+              EMERGENCY LOCATIONS
+          ============================================== */}
 
           {activeTab === 'emergency' && (
             <EmergencyLocationsView
-              onNavigateToRouteWithDest={() => {
-                setActiveTab('route');
+              onNavigateToRouteWithDest={(
+                facilityName
+              ) => {
+                void facilityName;
 
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
+                navigateToTab('route');
               }}
             />
           )}
 
+          {/* =============================================
+              OFFICIAL ALERTS
+          ============================================== */}
+
           {activeTab === 'alerts' && (
             <OfficialAlertsView
-              citizenReports={citizenReports}
-              activeRiskCell={activeRiskCell}
+              citizenReports={
+                citizenReports
+              }
+              activeRiskCell={
+                activeRiskCell
+              }
             />
           )}
 
+          {/* =============================================
+              ADMIN DASHBOARD
+          ============================================== */}
+
           {activeTab === 'dashboard' && (
             <AdminDashboardView
-              citizenReports={citizenReports}
-              onVerifyReport={handleVerifyReport}
-              onSelectNeighbourhoodByName={(name) => {
+              citizenReports={
+                citizenReports
+              }
+              onVerifyReport={
+                handleVerifyReport
+              }
+              onSelectNeighbourhoodByName={(
+                name
+              ) => {
                 const matched =
                   CHENNAI_NEIGHBOURHOODS.find(
-                    (n) =>
-                      n.name.toLowerCase() ===
+                    (neighbourhood) =>
+                      neighbourhood.name
+                        .toLowerCase() ===
                       name.toLowerCase()
                   );
 
                 if (matched) {
-                  handleSelectNeighbourhood(matched);
-                  setActiveTab('overview');
+                  handleSelectNeighbourhood(
+                    matched
+                  );
 
-                  window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                  });
+                  navigateToTab(
+                    'overview'
+                  );
                 }
               }}
             />
           )}
 
+          {/* =============================================
+              METHODOLOGY
+          ============================================== */}
+
           {activeTab === 'methodology' && (
             <DataMethodologyView />
           )}
 
+          {/* =============================================
+              APPLICATION FOOTER
+          ============================================== */}
+
+          <footer
+            className="
+              mt-10
+              pt-5
+
+              border-t
+              border-[#1A1A1A]/10
+
+              flex
+              flex-col
+              sm:flex-row
+
+              items-center
+              justify-between
+
+              gap-2
+
+              text-[10px]
+              font-sans
+
+              text-[#1A1A1A]/50
+            "
+          >
+            <span>
+              PravahAI • AI-Assisted
+              Hyperlocal Flood Intelligence
+            </span>
+
+            <span
+              className="
+                font-bold
+                uppercase
+                tracking-[0.18em]
+                text-[#8B5E3C]
+              "
+            >
+              2026 HackHive • SIH
+            </span>
+          </footer>
         </main>
       </div>
 
+      {/* =====================================================
+          NOTIFICATION TOASTS
+      ====================================================== */}
+
       <NotificationToast
         toasts={toasts}
-        onDismiss={handleDismissToast}
+        onDismiss={
+          handleDismissToast
+        }
       />
-
     </div>
   );
 }

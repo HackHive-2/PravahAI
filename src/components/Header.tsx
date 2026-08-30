@@ -1,11 +1,13 @@
 import React from 'react';
 import {
+  ShieldAlert,
   MapPin,
   Radio,
   Sparkles,
   ChevronDown,
   AlertTriangle,
   Play,
+  Check,
 } from 'lucide-react';
 
 import pravahaiLogo from '../assets/pravahai-logo.png';
@@ -40,20 +42,21 @@ export const Header: React.FC<HeaderProps> = ({
         sticky
         top-0
         z-40
-        bg-[#F4F1EE]/95
+        bg-[#F5F7F8]/95
         backdrop-blur-md
         border-b
-        border-[#1A1A1A]/20
-        text-[#1A1A1A]
+        border-[#102A43]/15
+        text-[#17212B]
         px-4
         lg:px-8
         py-3
-        shadow-[0_2px_15px_rgba(26,26,26,0.04)]
+        shadow-[0_2px_18px_rgba(16,42,67,0.07)]
       "
     >
       {/* =====================================================
-          TOP EDITORIAL BAR
+          TOP INFORMATION BAR
       ====================================================== */}
+
       <div
         className="
           max-w-[1600px]
@@ -62,22 +65,26 @@ export const Header: React.FC<HeaderProps> = ({
           lg:flex
           items-center
           justify-between
+
           text-[9px]
           uppercase
           tracking-[0.25em]
           font-sans
-          text-[#1A1A1A]/60
+
+          text-[#52606D]
+
           pb-2
           mb-2
+
           border-b
-          border-[#1A1A1A]/10
+          border-[#102A43]/10
         "
       >
         <div>
           THE GEOSPATIAL INTELLIGENCE ARCHIVE — GREATER CHENNAI BASIN
         </div>
 
-        <div>
+        <div className="text-[#087F8C] font-bold">
           DISPATCH NO. 04 • MONSOON SEASON 2026
         </div>
 
@@ -89,84 +96,169 @@ export const Header: React.FC<HeaderProps> = ({
       {/* =====================================================
           MAIN HEADER
       ====================================================== */}
+
       <div
         className="
           max-w-[1600px]
           mx-auto
+
           flex
           flex-col
           md:flex-row
+
           items-center
           justify-between
+
           gap-3
         "
       >
-        {/* =====================================================
-            LOGO & PRODUCT IDENTITY
-        ====================================================== */}
+
+        {/* ===================================================
+            LOGO + PRODUCT IDENTITY
+        ==================================================== */}
+
         <div
           className="
             flex
             items-center
             gap-3
+
             w-full
             md:w-auto
+
             justify-between
             md:justify-start
           "
         >
+
           <div className="flex items-center gap-3">
 
             {/* PravahAI Logo */}
             <div
               className="
+                group
+                relative
+
                 flex
                 items-center
                 justify-center
-                w-10
-                h-10
-                shrink-0
+
+                w-11
+                h-11
+
+                rounded-lg
+
+                bg-[#102A43]
+
+                text-white
+
+                border
+                border-[#0B1F33]
+
+                shadow-md
 
                 transition-all
                 duration-300
                 ease-out
 
-                hover:scale-110
                 hover:-translate-y-0.5
+                hover:shadow-xl
+                hover:bg-[#0B1F33]
+
+                active:scale-95
               "
             >
+
               <img
-                src={pravahaiLogo}
-                alt="PravahAI Logo"
+  src={pravahaiLogo}
+  alt="PravahAI"
+  className="
+    w-9
+    h-9
+    object-contain
+
+    transition-all
+    duration-300
+
+    group-hover:scale-110
+  "
+/>
+              {/* Live indicator */}
+              <div
                 className="
-                  w-full
-                  h-full
-                  object-contain
+                  absolute
+
+                  -bottom-1
+                  -right-1
+
+                  w-3
+                  h-3
+
+                  bg-[#087F8C]
+
+                  rounded-full
+
+                  border-2
+                  border-[#F5F7F8]
+
+                  shadow-sm
+
+                  animate-pulse
                 "
               />
             </div>
 
             {/* Product Identity */}
             <div>
-              <div className="flex items-center gap-2">
+
+              <div className="flex items-center gap-2 flex-wrap">
 
                 <span
                   className="
                     font-serif
                     font-bold
+
                     tracking-tight
+
                     text-xl
                     lg:text-2xl
-                    text-[#1A1A1A]
 
-                    transition-all
+                    text-[#102A43]
+
+                    transition-colors
                     duration-200
 
-                    hover:text-[#8B5E3C]
-                    hover:tracking-tight
+                    hover:text-[#087F8C]
                   "
                 >
                   PravahAI
+                </span>
+
+                {/* HackHive badge */}
+                <span
+                  className="
+                    px-1.5
+                    py-0.5
+
+                    text-[8px]
+
+                    font-sans
+                    font-bold
+
+                    uppercase
+                    tracking-widest
+
+                    bg-[#DDF3F3]
+
+                    text-[#087F8C]
+
+                    border
+                    border-[#087F8C]/25
+
+                    rounded
+                  "
+                >
+                  2026 HackHive
                 </span>
 
               </div>
@@ -174,124 +266,172 @@ export const Header: React.FC<HeaderProps> = ({
               <p
                 className="
                   text-[11px]
-                  text-[#1A1A1A]/70
+
+                  text-[#52606D]
+
                   font-sans
                   tracking-wide
+
                   hidden
                   sm:block
                 "
               >
                 AI-Assisted Hyperlocal Flood Intelligence & Risk-Aware Decision System
               </p>
+
             </div>
           </div>
 
-          {/* =====================================================
-              MOBILE TOUR BUTTON
-          ====================================================== */}
+          {/* =================================================
+              MOBILE TOUR
+          ================================================== */}
+
           <button
             type="button"
             onClick={onToggleTour}
+            aria-label="Toggle presentation tour"
             className={`
+              group
+
               md:hidden
+
               text-xs
               font-sans
               font-bold
+
               uppercase
               tracking-wider
-              px-2.5
-              py-1.5
-              rounded-sm
+
+              px-3
+              py-2
+
+              rounded-md
+
               flex
               items-center
               gap-1.5
+
+              border
 
               transition-all
               duration-200
               ease-out
 
-              hover:-translate-y-0.5
-              hover:shadow-md
               active:scale-95
 
               ${
                 tourActive
-                  ? 'bg-[#A67C52] text-white shadow-md'
-                  : 'bg-white text-[#1A1A1A] border border-[#1A1A1A]/20 hover:bg-[#EBE7E2]'
+                  ? `
+                    bg-[#102A43]
+                    text-white
+                    border-[#102A43]
+                    shadow-md
+                  `
+                  : `
+                    bg-white
+                    text-[#102A43]
+                    border-[#B8C6CF]
+
+                    hover:bg-[#EEF6F7]
+                    hover:border-[#087F8C]
+                    hover:-translate-y-0.5
+                    hover:shadow-md
+                  `
               }
             `}
           >
+
             <Play
-              className="
+              className={`
                 w-3.5
                 h-3.5
-                fill-current
-                text-[#A67C52]
 
                 transition-transform
                 duration-200
 
+                ${
+                  tourActive
+                    ? 'text-[#D49A3A]'
+                    : 'text-[#087F8C]'
+                }
+
                 group-hover:scale-110
-              "
+              `}
             />
 
             <span>
               Tour
             </span>
+
           </button>
+
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             CENTER CONTROLS
-        ====================================================== */}
+        ==================================================== */}
+
         <div
           className="
             flex
             flex-wrap
+
             items-center
             justify-center
+
             gap-2
+
             w-full
             md:w-auto
           "
         >
-          {/* =====================================================
-              CHENNAI MVP
-          ====================================================== */}
+
+          {/* =================================================
+              CHENNAI MVP BADGE
+          ================================================== */}
+
           <div
             className="
+              group
+
               flex
               items-center
               gap-1.5
+
               px-3
               py-1.5
 
-              bg-[#EBE7E2]
+              bg-[#EEF2F4]
+
               border
-              border-[#1A1A1A]/15
+              border-[#B8C6CF]
 
               text-xs
+
               font-sans
               tracking-wider
               font-semibold
-              text-[#1A1A1A]/80
 
-              rounded-sm
+              text-[#52606D]
+
+              rounded-md
 
               transition-all
               duration-200
-              ease-out
 
-              hover:bg-[#E3DED8]
+              hover:bg-[#DDF3F3]
+              hover:border-[#087F8C]/30
               hover:-translate-y-0.5
               hover:shadow-sm
             "
           >
+
             <MapPin
               className="
                 w-3.5
                 h-3.5
-                text-[#A67C52]
+
+                text-[#087F8C]
 
                 transition-transform
                 duration-200
@@ -300,64 +440,87 @@ export const Header: React.FC<HeaderProps> = ({
               "
             />
 
-            <span className="font-bold text-[#1A1A1A]">
+            <span className="font-bold text-[#102A43]">
               CHENNAI MVP
             </span>
 
-            <span className="text-[#1A1A1A]/30">
+            <span className="text-[#52606D]/40">
               •
             </span>
 
-            <span className="text-[#1A1A1A]/60">
+            <span className="text-[#52606D]">
               TAMIL NADU
             </span>
+
           </div>
 
-          {/* =====================================================
+          {/* =================================================
               NEIGHBOURHOOD DROPDOWN
-          ====================================================== */}
+          ================================================== */}
+
           <div className="relative">
 
             {/* Dropdown Trigger */}
+
             <button
               type="button"
               onClick={() => setDropdownOpen((prev) => !prev)}
-              className="
+              aria-expanded={dropdownOpen}
+              className={`
                 group
+
                 flex
                 items-center
                 gap-2
+
                 px-3
                 py-1.5
 
                 bg-white
-                hover:bg-[#F9F7F5]
 
                 border
-                border-[#1A1A1A]/20
 
                 text-xs
                 font-sans
-                text-[#1A1A1A]
+                text-[#17212B]
 
                 transition-all
                 duration-200
                 ease-out
 
-                hover:-translate-y-0.5
-                hover:shadow-md
+                rounded-md
+
+                shadow-sm
 
                 active:scale-[0.98]
 
-                rounded-sm
-                shadow-sm
-              "
+                ${
+                  dropdownOpen
+                    ? `
+                      border-[#087F8C]
+                      ring-2
+                      ring-[#087F8C]/10
+                      bg-[#F7FCFC]
+                    `
+                    : `
+                      border-[#B8C6CF]
+
+                      hover:bg-[#EEF6F7]
+                      hover:border-[#087F8C]/60
+                      hover:-translate-y-0.5
+                      hover:shadow-md
+                    `
+                }
+              `}
             >
+
               <span
                 className="
-                  text-[#1A1A1A]/50
+                  text-[#7B8794]
+
                   uppercase
-                  text-[10px]
+                  text-[9px]
+
                   tracking-wider
                   font-bold
                 "
@@ -369,41 +532,60 @@ export const Header: React.FC<HeaderProps> = ({
                 className="
                   font-serif
                   font-bold
+
                   text-sm
-                  text-[#1A1A1A]
+
+                  text-[#102A43]
 
                   transition-colors
                   duration-200
 
-                  group-hover:text-[#8B5E3C]
+                  group-hover:text-[#087F8C]
                 "
               >
                 {selectedNeighbourhood.name}
               </span>
 
               {/* Risk Badge */}
+
               <span
                 className={`
                   px-1.5
                   py-0.5
+
                   text-[9px]
+
                   font-sans
                   font-bold
+
                   uppercase
                   tracking-wider
-                  rounded-sm
+
+                  rounded
+
+                  border
 
                   transition-all
                   duration-200
 
-                  group-hover:scale-105
-
                   ${
                     selectedNeighbourhood.baseRisk === 'CRITICAL'
-                      ? 'bg-[#9E2A2B]/10 text-[#9E2A2B] border border-[#9E2A2B]/30'
+                      ? `
+                        bg-[#FDECEC]
+                        text-[#B42318]
+                        border-[#E9A6A1]
+                      `
                       : selectedNeighbourhood.baseRisk === 'HIGH'
-                      ? 'bg-[#C97A2C]/10 text-[#C97A2C] border border-[#C97A2C]/30'
-                      : 'bg-[#2D5A43]/10 text-[#2D5A43] border border-[#2D5A43]/30'
+                      ? `
+                        bg-[#FFF3E8]
+                        text-[#C05621]
+                        border-[#E7B18A]
+                      `
+                      : `
+                        bg-[#E8F6EF]
+                        text-[#18794E]
+                        border-[#A7D8C0]
+                      `
                   }
                 `}
               >
@@ -414,35 +596,49 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`
                   w-3.5
                   h-3.5
-                  text-[#1A1A1A]/50
 
-                  transition-transform
+                  text-[#7B8794]
+
+                  transition-all
                   duration-200
 
-                  ${dropdownOpen ? 'rotate-180 text-[#A67C52]' : ''}
+                  ${
+                    dropdownOpen
+                      ? 'rotate-180 text-[#087F8C]'
+                      : 'group-hover:text-[#087F8C]'
+                  }
                 `}
               />
+
             </button>
 
             {/* Dropdown Menu */}
+            {/* =================================================
+                DROPDOWN MENU
+            ================================================== */}
+
             {dropdownOpen && (
               <div
                 className="
                   absolute
                   left-0
-                  mt-1.5
-                  w-64
 
-                  bg-[#FAF8F5]
+                  mt-2
+
+                  w-72
+
+                  bg-[#FFFFFF]
 
                   border
-                  border-[#1A1A1A]/20
+                  border-[#B8C6CF]
 
-                  shadow-xl
+                  shadow-2xl
+
                   p-2
 
                   z-50
-                  rounded-sm
+
+                  rounded-lg
 
                   animate-in
                   fade-in
@@ -450,92 +646,140 @@ export const Header: React.FC<HeaderProps> = ({
                   duration-150
                 "
               >
+
+                {/* Dropdown Header */}
+
                 <div
                   className="
-                    text-[9px]
-                    font-sans
-                    font-bold
-                    uppercase
-                    tracking-[0.2em]
-                    text-[#1A1A1A]/50
-                    px-2
-                    py-1
-                    border-b
-                    border-[#1A1A1A]/10
+                    flex
+                    items-center
+                    justify-between
+
+                    px-2.5
+                    py-2
+
                     mb-1
+
+                    border-b
+                    border-[#D6DEE3]
                   "
                 >
-                  Select Chennai Ward / Basin
+
+                  <div>
+
+                    <div
+                      className="
+                        text-[9px]
+
+                        font-sans
+                        font-bold
+
+                        uppercase
+                        tracking-[0.2em]
+
+                        text-[#087F8C]
+                      "
+                    >
+                      LOCATION FILTER
+                    </div>
+
+                    <div
+                      className="
+                        text-[10px]
+
+                        font-sans
+
+                        text-[#7B8794]
+
+                        mt-0.5
+                      "
+                    >
+                      Select Chennai Ward / Basin
+                    </div>
+
+                  </div>
+
+                  <MapPin
+                    className="
+                      w-4
+                      h-4
+
+                      text-[#087F8C]
+                    "
+                  />
+
                 </div>
 
-                {CHENNAI_NEIGHBOURHOODS.map((item) => (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => {
-                      onSelectNeighbourhood(item);
-                      setDropdownOpen(false);
-                    }}
-                    className={`
-                      w-full
-                      text-left
-                      px-2.5
-                      py-2
+                {/* Neighbourhoods */}
 
-                      text-xs
+                <div className="space-y-1">
 
-                      flex
-                      items-center
-                      justify-between
+                  {CHENNAI_NEIGHBOURHOODS.map((item) => {
 
-                      transition-all
-                      duration-150
-                      ease-out
+                    const isSelected =
+                      selectedNeighbourhood.id === item.id;
 
-                      rounded-sm
+                    return (
+                      <button
+                        type="button"
+                        key={item.id}
+                        onClick={() => {
+                          onSelectNeighbourhood(item);
+                          setDropdownOpen(false);
+                        }}
+                        className={`
+                          group
 
-                      hover:translate-x-1
-                      hover:shadow-sm
+                          w-full
 
-                      active:scale-[0.98]
+                          text-left
 
-                      ${
-                        selectedNeighbourhood.id === item.id
-                          ? `
-                            bg-[#A67C52]/15
-                            text-[#1A1A1A]
-                            font-bold
-                            border-l-2
-                            border-[#A67C52]
-                          `
-                          : `
-                            text-[#1A1A1A]/80
-                            hover:bg-[#EAE6E1]
-                          `
-                      }
-                    `}
-                  >
-                    <div>
-                      <div
-                        className="
-                          font-serif
-                          font-semibold
-                          text-[#1A1A1A]
-                        "
+                          px-2.5
+                          py-2.5
+
+                          text-xs
+
+                          flex
+                          items-center
+                          justify-between
+
+                          transition-all
+                          duration-150
+
+                          rounded-md
+
+                          border
+
+                          active:scale-[0.98]
+
+                          ${
+                            isSelected
+                              ? `
+                                bg-[#DDF3F3]
+
+                                border-[#087F8C]/30
+
+                                text-[#102A43]
+
+                                shadow-sm
+                              `
+                              : `
+                                bg-[#F8FAFB]
+
+                                border-transparent
+
+                                text-[#52606D]
+
+                                hover:bg-[#EEF6F7]
+                                hover:border-[#087F8C]/20
+                                hover:text-[#102A43]
+                                hover:translate-x-0.5
+                              `
+                          }
+                        `}
                       >
-                        {item.name}
-                      </div>
 
-                      <div
-                        className="
-                          text-[10px]
-                          font-sans
-                          text-[#1A1A1A]/60
-                        "
-                      >
-                        {item.elevationMeters}m DEM elevation
-                      </div>
-                    </div>
+                        <div className="min-w-0">
 
                     <span
                       className={`
@@ -556,42 +800,133 @@ export const Header: React.FC<HeaderProps> = ({
                         }
                       `}
                     >
-                      {item.score}/100
+                                                     {item.score}/100
                     </span>
-                  </button>
-                ))}
+
+                          <div
+                            className={`
+                              font-serif
+                              font-bold
+
+                              transition-colors
+                              duration-150
+
+                              ${
+                                isSelected
+                                  ? 'text-[#102A43]'
+                                  : 'text-[#17212B] group-hover:text-[#087F8C]'
+                              }
+                            `}
+                          >
+                            {item.name}
+                          </div>
+
+                          <div
+                            className="
+                              text-[10px]
+
+                              font-sans
+
+                              text-[#7B8794]
+
+                              mt-0.5
+                            "
+                          >
+                            {item.elevationMeters}m DEM elevation
+                          </div>
+
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+
+                          <span
+                            className={`
+                              text-[9px]
+
+                              font-sans
+                              font-bold
+
+                              uppercase
+                              tracking-wider
+
+                              px-1.5
+                              py-0.5
+
+                              rounded
+
+                              ${
+                                item.baseRisk === 'CRITICAL'
+                                  ? 'text-[#B42318] bg-[#FDECEC]'
+                                  : item.baseRisk === 'HIGH'
+                                  ? 'text-[#C05621] bg-[#FFF3E8]'
+                                  : 'text-[#18794E] bg-[#E8F6EF]'
+                              }
+                            `}
+                          >
+                            {item.score}/100
+                          </span>
+
+                          {isSelected && (
+                            <Check
+                              className="
+                                w-3.5
+                                h-3.5
+
+                                text-[#087F8C]
+                              "
+                            />
+                          )}
+
+                        </div>
+
+                      </button>
+                    );
+                  })}
+
+                </div>
               </div>
             )}
+
           </div>
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             RIGHT SIDE ACTIONS
-        ====================================================== */}
+        ==================================================== */}
+
         <div
           className="
             flex
             items-center
+
             gap-2.5
+
             text-xs
             font-sans
           "
         >
-          {/* =====================================================
-              SIH TOUR BUTTON
-          ====================================================== */}
+
+          {/* =================================================
+              PRIMARY SIH BUTTON
+          ================================================== */}
+
           <button
             type="button"
             onClick={onToggleTour}
             className={`
+              group
+
               hidden
               md:flex
+
               items-center
               gap-1.5
-              px-3
-              py-1.5
+
+              px-3.5
+              py-2
 
               text-xs
+
               font-sans
               uppercase
               tracking-wider
@@ -601,37 +936,51 @@ export const Header: React.FC<HeaderProps> = ({
               duration-200
               ease-out
 
-              hover:-translate-y-0.5
-              hover:shadow-lg
-
               active:scale-[0.97]
 
-              shadow-sm
-              rounded-sm
+              rounded-md
 
               ${
                 tourActive
                   ? `
-                    bg-[#1A1A1A]
-                    text-[#F4F1EE]
+                    bg-[#102A43]
+                    text-white
+
                     border
-                    border-[#1A1A1A]
+                    border-[#102A43]
+
+                    shadow-lg
                   `
                   : `
-                    bg-[#A67C52]
-                    hover:bg-[#8B5E3C]
+                    bg-[#102A43]
                     text-white
+
                     border
-                    border-[#A67C52]
+                    border-[#102A43]
+
+                    shadow-md
+
+                    hover:bg-[#0B1F33]
+                    hover:-translate-y-0.5
+                    hover:shadow-xl
                   `
               }
             `}
           >
+
             <Sparkles
               className="
                 w-3.5
                 h-3.5
                 text-amber-200
+
+                text-[#D49A3A]
+
+                transition-all
+                duration-300
+
+                group-hover:scale-110
+                group-hover:rotate-12
               "
             />
 
@@ -640,54 +989,63 @@ export const Header: React.FC<HeaderProps> = ({
                 ? 'Close Presentation'
                 : '2-Min SIH Pitch Demo'}
             </span>
+
           </button>
 
-          {/* =====================================================
+          {/* =================================================
               CACHED SNAPSHOT
-          ====================================================== */}
+          ================================================== */}
+
           <button
             type="button"
             onClick={onOpenMethodology}
             className="
               group
+
               flex
               items-center
-              gap-1
+              gap-1.5
 
               px-2.5
-              py-1
+              py-1.5
 
-              bg-[#EAE6E1]
+              bg-[#EEF2F4]
 
               border
-              border-[#1A1A1A]/20
+              border-[#B8C6CF]
 
-              text-[10px]
+              text-[9px]
+
               font-sans
               uppercase
               tracking-widest
-              font-semibold
-              text-[#1A1A1A]/80
+              font-bold
+
+              text-[#52606D]
 
               transition-all
               duration-200
-              ease-out
 
-              hover:bg-[#DCD6CE]
+              hover:bg-[#DDF3F3]
+              hover:border-[#087F8C]/30
+              hover:text-[#087F8C]
+
               hover:-translate-y-0.5
-              hover:shadow-md
+              hover:shadow-sm
 
               active:scale-[0.98]
 
-              rounded-sm
+              rounded-md
             "
-            title="PravahAI uses cached & preprocessed data for offline demonstration resilience."
+            title="PravahAI uses cached and preprocessed data for offline demonstration resilience."
           >
+
             <Radio
               className="
                 w-3
                 h-3
-                text-[#A67C52]
+
+                text-[#087F8C]
 
                 animate-pulse
               "
@@ -696,42 +1054,54 @@ export const Header: React.FC<HeaderProps> = ({
             <span>
               CACHED SNAPSHOT
             </span>
+
           </button>
 
-          {/* =====================================================
+          {/* =================================================
               ALERT BUTTON
-          ====================================================== */}
+          ================================================== */}
+
           <button
             type="button"
             onClick={onOpenAlerts}
+            aria-label={`Open alerts${unreadAlertCount > 0 ? `, ${unreadAlertCount} unread` : ''}`}
             className="
               group
+
               relative
 
-              p-2
+              flex
+              items-center
+              justify-center
+
+              w-9
+              h-9
 
               bg-white
-              hover:bg-[#EBE7E2]
 
               border
-              border-[#1A1A1A]/20
+              border-[#B8C6CF]
 
-              text-[#1A1A1A]
+              text-[#102A43]
 
               transition-all
               duration-200
               ease-out
 
+              hover:bg-[#FFF8D9]
+              hover:border-[#D49A3A]
               hover:-translate-y-0.5
               hover:shadow-md
 
               active:scale-90
 
-              rounded-sm
+              rounded-md
+
               shadow-sm
             "
             title="Official & Model Alerts"
           >
+
             <AlertTriangle
               className="
                 w-4
@@ -740,20 +1110,27 @@ export const Header: React.FC<HeaderProps> = ({
               "
             />
 
+            {/* Alert Count */}
+
             {unreadAlertCount > 0 && (
               <span
                 className="
                   absolute
+
                   -top-1
                   -right-1
 
-                  w-4
+                  min-w-4
                   h-4
 
-                  bg-[#9E2A2B]
+                  px-1
+
+                  bg-[#B42318]
+
                   text-white
 
-                  text-[9px]
+                  text-[8px]
+
                   font-sans
                   font-bold
 
@@ -763,15 +1140,20 @@ export const Header: React.FC<HeaderProps> = ({
 
                   rounded-full
 
-                  animate-pulse
+                  border-2
+                  border-[#F5F7F8]
 
                   shadow-sm
+
+                  animate-pulse
                 "
               >
                 {unreadAlertCount}
               </span>
             )}
+
           </button>
+
         </div>
       </div>
     </header>

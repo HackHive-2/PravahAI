@@ -1,20 +1,106 @@
 @import "tailwindcss";
 
+/* =========================================================
+   PRAVAH AI — GLOBAL DESIGN SYSTEM
+   Clean • Trustworthy • Disaster Intelligence
+   ========================================================= */
+
 @layer base {
-  body {
-    background-color: #F4F1EE;
-    color: #1A1A1A;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+
+  :root {
+    /* Main Brand Colors */
+    --pravah-navy: #102A43;
+    --pravah-navy-dark: #0B1F33;
+    --pravah-blue: #1D4E89;
+    --pravah-teal: #087F8C;
+    --pravah-teal-light: #DDF3F3;
+
+    /* Backgrounds */
+    --pravah-background: #F5F7F8;
+    --pravah-surface: #FFFFFF;
+    --pravah-surface-soft: #EEF2F4;
+    --pravah-border: #D6DEE3;
+
+    /* Text */
+    --pravah-text: #17212B;
+    --pravah-text-secondary: #52606D;
+    --pravah-text-muted: #7B8794;
+
+    /* Status Colors */
+    --pravah-critical: #B42318;
+    --pravah-critical-soft: #FDECEC;
+
+    --pravah-high: #C05621;
+    --pravah-high-soft: #FFF3E8;
+
+    --pravah-moderate: #A67C00;
+    --pravah-moderate-soft: #FFF8D9;
+
+    --pravah-safe: #18794E;
+    --pravah-safe-soft: #E8F6EF;
+
+    /* Accent */
+    --pravah-accent: #D49A3A;
   }
-  
-  h1, h2, h3, .font-serif {
-    font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+
+    background-color: var(--pravah-background);
+
+    color: var(--pravah-text);
+
+    font-family: 'Plus Jakarta Sans', sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-serif {
+    font-family: 'Newsreader',
+      Georgia,
+      Cambria,
+      'Times New Roman',
+      Times,
+      serif;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background-color: #087F8C;
+    color: #FFFFFF;
   }
 }
 
+
+/* =========================================================
+   PRAVAH AI TYPOGRAPHY
+   ========================================================= */
+
 .font-editorial-title {
   font-family: 'Newsreader', Georgia, serif;
-  letter-spacing: -0.02em;
+
+  letter-spacing: -0.025em;
 }
 
 .font-cinzel {
@@ -25,21 +111,225 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Custom scrollbars for editorial layout */
+
+/* =========================================================
+   GLOBAL INTERACTION
+   ========================================================= */
+
+@layer utilities {
+
+  .pravah-focus {
+    outline: none;
+  }
+
+  .pravah-focus:focus-visible {
+    outline: 2px solid #087F8C;
+    outline-offset: 2px;
+  }
+
+  .pravah-card {
+    background: #FFFFFF;
+    border: 1px solid #D6DEE3;
+    box-shadow:
+      0 1px 2px rgba(16, 42, 67, 0.04),
+      0 4px 14px rgba(16, 42, 67, 0.04);
+  }
+
+  .pravah-card-hover {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .pravah-card-hover:hover {
+    transform: translateY(-2px);
+
+    border-color: #9FB6C3;
+
+    box-shadow:
+      0 4px 8px rgba(16, 42, 67, 0.06),
+      0 10px 24px rgba(16, 42, 67, 0.08);
+  }
+
+  .pravah-primary-button {
+    background: #102A43;
+    color: #FFFFFF;
+
+    border: 1px solid #102A43;
+
+    transition:
+      background-color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .pravah-primary-button:hover {
+    background: #0B1F33;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 4px 10px rgba(16, 42, 67, 0.18);
+  }
+
+  .pravah-primary-button:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .pravah-secondary-button {
+    background: #FFFFFF;
+    color: #102A43;
+
+    border: 1px solid #B8C6CF;
+
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .pravah-secondary-button:hover {
+    background: #EEF6F7;
+
+    border-color: #087F8C;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 3px 8px rgba(8, 127, 140, 0.10);
+  }
+
+  .pravah-secondary-button:active {
+    transform: scale(0.98);
+  }
+}
+
+
+/* =========================================================
+   RISK STATUS UTILITIES
+   ========================================================= */
+
+.risk-critical {
+  color: #B42318;
+  background-color: #FDECEC;
+  border-color: #E9A6A1;
+}
+
+.risk-high {
+  color: #C05621;
+  background-color: #FFF3E8;
+  border-color: #E7B18A;
+}
+
+.risk-moderate {
+  color: #8A6A00;
+  background-color: #FFF8D9;
+  border-color: #E5CF78;
+}
+
+.risk-safe {
+  color: #18794E;
+  background-color: #E8F6EF;
+  border-color: #A7D8C0;
+}
+
+
+/* =========================================================
+   CUSTOM SCROLLBARS
+   ========================================================= */
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #EAE6E1;
+  background: #E8EDF0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C4BEB5;
-  border-radius: 3px;
+  background: #9AAAB5;
+
+  border-radius: 6px;
+
+  border: 1px solid #E8EDF0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A67C52;
+  background: #087F8C;
+}
+
+
+/* Firefox scrollbar */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9AAAB5 #E8EDF0;
+}
+
+
+/* =========================================================
+   SMOOTH PAGE TRANSITIONS
+   ========================================================= */
+
+.page-transition {
+  animation: pravahFadeIn 220ms ease-out;
+}
+
+@keyframes pravahFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   SUBTLE PULSE FOR LIVE / ALERT INDICATORS
+   ========================================================= */
+
+.pravah-live-dot {
+  animation: pravahPulse 2s ease-in-out infinite;
+}
+
+@keyframes pravahPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   REDUCE MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

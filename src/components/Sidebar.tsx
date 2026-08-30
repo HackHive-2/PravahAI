@@ -72,7 +72,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: 'Report Flooding',
       sublabel: 'AI Evidence Validation',
       icon: Camera,
-      badge: 'Feedback',
+      badge:
+        pendingReportsCount > 0
+          ? pendingReportsCount
+          : 'Feedback',
     },
     {
       id: 'emergency',
@@ -95,9 +98,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badge:
         criticalZonesCount > 0
           ? `${criticalZonesCount} Critical`
-          : undefined,
+          : 'Command',
       badgeColor:
-        'bg-red-500/20 text-red-300 border-red-500/40',
+        'bg-[#FDECEC] text-[#B42318] border-[#E9A6A1]',
       section: 'DISASTER MANAGEMENT',
     },
     {
@@ -112,218 +115,409 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       className="
         w-full
-        lg:w-64
-        bg-[#F4F1EE]
+        lg:w-72
+        lg:min-w-72
+        lg:max-w-72
+
+        bg-[#F5F7F8]
+
         border-r
-        border-[#1A1A1A]/15
+        border-[#102A43]/15
+
         shrink-0
+
         flex
         flex-col
         justify-between
+
         py-4
+
+        min-h-full
+        min-w-0
+
+        overflow-hidden
       "
     >
-      {/* Navigation */}
-      <div className="px-3 space-y-1">
+
+      {/* =====================================================
+          NAVIGATION
+      ====================================================== */}
+
+      <nav
+        className="
+          w-full
+          px-3
+          space-y-1.5
+          min-w-0
+        "
+        aria-label="Primary navigation"
+      >
+
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
 
           return (
             <React.Fragment key={item.id}>
-              {/* Section Heading */}
+
+              {/* =================================================
+                  SECTION HEADING
+              ================================================== */}
+
               {item.section && (
                 <div
                   className="
                     pt-4
-                    pb-1.5
-                    px-3
+                    pb-2
+                    px-2
+
+                    mt-3
+
                     text-[9px]
+
                     font-sans
                     font-bold
+
                     uppercase
-                    tracking-[0.25em]
-                    text-[#1A1A1A]/50
+                    tracking-[0.2em]
+
+                    text-[#52606D]
+
                     border-t
-                    border-[#1A1A1A]/10
-                    mt-2
+                    border-[#102A43]/10
+
+                    whitespace-nowrap
+                    overflow-hidden
+                    text-ellipsis
                   "
                 >
                   {item.section}
                 </div>
               )}
 
-              {/* Navigation Button */}
+              {/* =================================================
+                  NAVIGATION BUTTON
+              ================================================== */}
+
               <button
                 type="button"
                 onClick={() => onSelectTab(item.id)}
+                aria-current={
+                  isActive ? 'page' : undefined
+                }
                 className={`
-                  w-full
                   group
+                  relative
+
+                  w-full
+                  min-w-0
+
                   flex
                   items-center
-                  justify-between
-                  px-3
+
+                  gap-2
+
+                  px-2.5
                   py-2.5
-                  rounded-sm
+
+                  rounded-lg
+
                   text-left
+
+                  border
 
                   transition-all
                   duration-200
                   ease-out
 
-                  hover:-translate-y-0.5
-                  hover:shadow-md
-
-                  active:scale-[0.97]
-
                   focus:outline-none
                   focus-visible:ring-2
-                  focus-visible:ring-[#A67C52]/50
+                  focus-visible:ring-[#087F8C]/40
+
+                  active:scale-[0.98]
 
                   ${
                     isActive
                       ? `
-                        bg-white
-                        text-[#1A1A1A]
-                        border-l-2
-                        border-[#A67C52]
-                        shadow-sm
-                        font-semibold
+                        bg-[#DDF3F3]
+
+                        text-[#102A43]
+
+                        border-[#087F8C]/30
+
+                        shadow-[0_4px_12px_rgba(8,127,140,0.12)]
+
+                        translate-x-0.5
                       `
                       : `
-                        text-[#1A1A1A]/70
-                        hover:text-[#1A1A1A]
-                        hover:bg-[#EBE7E2]
-                        font-medium
+                        bg-white
+
+                        text-[#52606D]
+
+                        border-[#D6DEE3]
+
+                        hover:bg-[#EEF6F7]
+
+                        hover:border-[#087F8C]/30
+
+                        hover:text-[#102A43]
+
+                        hover:-translate-y-0.5
+
+                        hover:shadow-[0_4px_10px_rgba(16,42,67,0.08)]
                       `
                   }
                 `}
               >
-                {/* Left Side */}
-                <div className="flex items-center gap-3 min-w-0">
 
-                  {/* Icon */}
-                  <div
-                    className={`
-                      p-1.5
-                      rounded-sm
-                      transition-all
+                {/* =================================================
+                    ACTIVE INDICATOR
+                ================================================== */}
+
+                {isActive && (
+                  <span
+                    className="
+                      absolute
+
+                      left-0
+                      top-2
+                      bottom-2
+
+                      w-1
+
+                      bg-[#087F8C]
+
+                      rounded-r-full
+
+                      shadow-sm
+                    "
+                  />
+                )}
+
+                {/* =================================================
+                    ICON
+                ================================================== */}
+
+                <div
+                  className={`
+                    shrink-0
+
+                    w-9
+                    h-9
+
+                    flex
+                    items-center
+                    justify-center
+
+                    rounded-md
+
+                    border
+
+                    transition-all
+                    duration-200
+                    ease-out
+
+                    ${
+                      isActive
+                        ? `
+                          bg-[#102A43]
+
+                          text-[#DDF3F3]
+
+                          border-[#102A43]
+
+                          shadow-sm
+
+                          scale-105
+                        `
+                        : `
+                          bg-[#EEF2F4]
+
+                          text-[#087F8C]
+
+                          border-[#D6DEE3]
+
+                          group-hover:bg-[#DDF3F3]
+
+                          group-hover:border-[#087F8C]/30
+
+                          group-hover:text-[#087F8C]
+
+                          group-hover:scale-105
+                        `
+                    }
+                  `}
+                >
+                  <Icon
+                    className="
+                      w-4
+                      h-4
+
+                      transition-transform
                       duration-200
-                      ease-out
 
                       group-hover:scale-110
-                      group-hover:rotate-2
+                    "
+                  />
+                </div>
+
+                {/* =================================================
+                    TEXT CONTENT
+
+                    IMPORTANT:
+                    This section is allowed to shrink and wrap.
+                    This prevents long labels from overlapping
+                    the badge/arrow.
+                ================================================== */}
+
+                <div
+                  className="
+                    min-w-0
+                    flex-1
+
+                    overflow-hidden
+                  "
+                >
+
+                  {/* Main Label */}
+
+                  <div
+                    className={`
+                      text-[13px]
+
+                      leading-[1.15]
+
+                      break-words
+
+                      transition-all
+                      duration-200
 
                       ${
                         isActive
                           ? `
-                            bg-[#A67C52]
-                            text-white
-                            shadow-sm
+                            text-[#102A43]
+
+                            font-serif
+                            font-bold
                           `
                           : `
-                            bg-[#EAE6E1]
-                            text-[#1A1A1A]/70
-                            group-hover:bg-[#DCD6CE]
-                            group-hover:text-[#1A1A1A]
-                            group-hover:shadow-sm
+                            text-[#263746]
+
+                            font-serif
+                            font-semibold
+
+                            group-hover:text-[#087F8C]
                           `
                       }
                     `}
                   >
-                    <Icon
-                      className="
-                        w-4
-                        h-4
-                        transition-transform
-                        duration-200
-                      "
-                    />
+                    {item.label}
                   </div>
 
-                  {/* Text */}
-                  <div className="truncate">
+                  {/* Sub Label */}
 
-                    {/* Main Label */}
-                    <div
-                      className={`
-                        text-xs
-                        transition-all
-                        duration-200
+                  <div
+                    className="
+                      mt-0.5
 
-                        ${
-                          isActive
-                            ? `
-                              text-[#1A1A1A]
-                              font-serif
-                              font-bold
-                            `
-                            : `
-                              text-[#1A1A1A]/80
-                              font-serif
-                              group-hover:translate-x-0.5
-                              group-hover:text-[#1A1A1A]
-                            `
-                        }
-                      `}
-                    >
-                      {item.label}
-                    </div>
+                      text-[9px]
 
-                    {/* Sub Label */}
-                    <div
-                      className="
-                        text-[10px]
-                        text-[#1A1A1A]/50
-                        font-sans
-                        truncate
-                        transition-colors
-                        duration-200
-                        group-hover:text-[#1A1A1A]/70
-                      "
-                    >
-                      {item.sublabel}
-                    </div>
+                      leading-[1.2]
+
+                      text-[#7B8794]
+
+                      font-sans
+
+                      overflow-hidden
+
+                      line-clamp-1
+
+                      transition-colors
+                      duration-200
+
+                      group-hover:text-[#52606D]
+                    "
+                  >
+                    {item.sublabel}
                   </div>
+
                 </div>
 
-                {/* Right Side */}
-                <div className="flex items-center gap-1.5 shrink-0">
+                {/* =================================================
+                    RIGHT CONTENT
+                ================================================== */}
 
-                  {/* Badge */}
+                <div
+                  className="
+                    shrink-0
+
+                    flex
+                    items-center
+
+                    gap-1
+
+                    ml-auto
+                  "
+                >
+
+                  {/* =================================================
+                      BADGE
+                  ================================================== */}
+
                   {item.badge && (
                     <span
                       className={`
-                        text-[9px]
+                        shrink-0
+
+                        max-w-[58px]
+
+                        text-[7px]
+
                         font-sans
                         font-bold
+
                         uppercase
-                        tracking-wider
+                        tracking-[0.06em]
+
                         px-1.5
-                        py-0.5
-                        rounded-sm
+                        py-1
+
+                        rounded
+
                         border
+
+                        whitespace-nowrap
+
+                        overflow-hidden
+                        text-ellipsis
 
                         transition-all
                         duration-200
-                        ease-out
-
-                        group-hover:scale-105
 
                         ${
-                          item.badgeColor ||
-                          (isActive
+                          item.badgeColor
+                            ? item.badgeColor
+                            : isActive
                             ? `
-                              bg-[#A67C52]/10
-                              text-[#8B5E3C]
-                              border-[#A67C52]/30
+                              bg-white
+
+                              text-[#087F8C]
+
+                              border-[#087F8C]/25
                             `
                             : `
-                              bg-[#EAE6E1]
-                              text-[#1A1A1A]/60
-                              border-[#1A1A1A]/10
-                            `)
+                              bg-[#F1F5F7]
+
+                              text-[#52606D]
+
+                              border-[#D6DEE3]
+
+                              group-hover:bg-[#DDF3F3]
+
+                              group-hover:text-[#087F8C]
+
+                              group-hover:border-[#087F8C]/25
+                            `
                         }
                       `}
                     >
@@ -331,11 +525,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     </span>
                   )}
 
-                  {/* Arrow */}
+                  {/* =================================================
+                      ARROW
+                  ================================================== */}
+
                   <ChevronRight
                     className={`
                       w-3.5
                       h-3.5
+
+                      shrink-0
 
                       transition-all
                       duration-200
@@ -344,76 +543,171 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       ${
                         isActive
                           ? `
-                            text-[#A67C52]
+                            text-[#087F8C]
+
                             translate-x-0.5
                           `
                           : `
-                            text-[#1A1A1A]/30
-                            group-hover:text-[#1A1A1A]/70
+                            text-[#9AA5B1]
+
+                            group-hover:text-[#087F8C]
+
                             group-hover:translate-x-1
                           `
                       }
                     `}
                   />
+
                 </div>
               </button>
+
             </React.Fragment>
           );
         })}
-      </div>
 
-      {/* Footer */}
-      <div className="px-4 pt-4 mt-4 border-t border-[#1A1A1A]/10">
+      </nav>
+
+      {/* =====================================================
+          FOOTER
+      ====================================================== */}
+
+      <div
+        className="
+          w-full
+
+          px-3
+          lg:px-4
+
+          pt-4
+          mt-4
+
+          border-t
+          border-[#102A43]/10
+
+          min-w-0
+        "
+      >
+
         <div
           className="
-            p-3
-            bg-[#EAE6E1]
+            group
+
+            w-full
+
+            p-3.5
+
+            bg-[#102A43]
+
             border
-            border-[#1A1A1A]/15
+            border-[#183B56]
+
             text-[11px]
-            space-y-1.5
-            rounded-sm
+
+            space-y-2
+
+            rounded-lg
+
+            shadow-md
 
             transition-all
             duration-300
             ease-out
 
-            hover:bg-[#E4DED7]
             hover:-translate-y-0.5
-            hover:shadow-md
+            hover:shadow-xl
           "
         >
-          {/* Doctrine Title */}
+
+          {/* =================================================
+              DOCTRINE TITLE
+          ================================================== */}
+
           <div
             className="
               flex
               items-center
-              gap-1.5
-              text-[#8B5E3C]
-              font-serif
-              font-bold
+              justify-between
+
+              gap-2
+
+              min-w-0
             "
           >
-            <ShieldCheck
-              className="
-                w-3.5
-                h-3.5
-                text-[#A67C52]
-                transition-transform
-                duration-300
-                group-hover:scale-110
-              "
-            />
 
-            <span>PravahAI Doctrine</span>
+            <div
+              className="
+                flex
+                items-center
+                gap-1.5
+
+                min-w-0
+
+                text-[#DDF3F3]
+
+                font-serif
+                font-bold
+              "
+            >
+
+              <ShieldCheck
+                className="
+                  w-4
+                  h-4
+
+                  shrink-0
+
+                  text-[#D49A3A]
+
+                  transition-transform
+                  duration-300
+
+                  group-hover:scale-110
+                  group-hover:rotate-6
+                "
+              />
+
+              <span
+                className="
+                  truncate
+                "
+              >
+                PravahAI Doctrine
+              </span>
+
+            </div>
+
+            <span
+              className="
+                shrink-0
+
+                text-[8px]
+
+                font-sans
+                font-bold
+
+                uppercase
+                tracking-widest
+
+                text-[#8FD3D3]
+              "
+            >
+              LIVE
+            </span>
+
           </div>
 
-          {/* Principle */}
+          {/* =================================================
+              PRINCIPLE
+          ================================================== */}
+
           <p
             className="
-              text-[#1A1A1A]/70
+              text-[#D6E2EA]
+
               text-[10px]
+
               font-sans
+
               leading-relaxed
             "
           >
@@ -421,21 +715,85 @@ export const Sidebar: React.FC<SidebarProps> = ({
             Decision &rarr; Relief.
           </p>
 
-          {/* Footer Information */}
+          {/* =================================================
+              DATA INFORMATION
+          ================================================== */}
+
           <div
             className="
-              text-[9px]
-              text-[#1A1A1A]/50
-              font-mono
-              pt-1
+              pt-2
+
               border-t
-              border-[#1A1A1A]/10
+              border-white/10
             "
           >
-            Open Data &bull; CartoDB &bull; Zero-Cost
+
+            <div
+              className="
+                text-[9px]
+
+                text-[#AFC0CC]
+
+                font-mono
+
+                leading-relaxed
+              "
+            >
+              Open Data &bull; CartoDB &bull; Zero-Cost
+            </div>
+
           </div>
+
+          {/* =================================================
+              HACKHIVE
+          ================================================== */}
+
+          <div
+            className="
+              flex
+              items-center
+              justify-between
+
+              gap-2
+
+              pt-1
+            "
+          >
+
+            <span
+              className="
+                text-[9px]
+
+                font-sans
+                font-bold
+
+                uppercase
+                tracking-widest
+
+                text-[#D49A3A]
+              "
+            >
+              2026 HackHive
+            </span>
+
+            <span
+              className="
+                text-[8px]
+
+                font-mono
+
+                text-[#8FA4B3]
+              "
+            >
+              SIH
+            </span>
+
+          </div>
+
         </div>
+
       </div>
+
     </aside>
   );
 };
