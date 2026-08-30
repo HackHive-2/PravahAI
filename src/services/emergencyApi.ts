@@ -1,6 +1,6 @@
 import { EmergencyFacility } from '../types';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = 'https://pravah-ai-tvoi.vercel.app';
 
 interface BackendEmergencyLocation {
   id: string;
@@ -33,7 +33,9 @@ function mapBackendFacility(
 
   return {
     id: facility.id,
+
     name: facility.name,
+
     category: categoryMap[facility.type],
 
     location: {
@@ -43,7 +45,6 @@ function mapBackendFacility(
 
     address: facility.location,
 
-    // Prototype values used by the existing UI.
     distanceKm: 0,
 
     verified: true,
@@ -73,16 +74,55 @@ function mapBackendFacility(
 export async function getEmergencyLocationsFromBackend(): Promise<
   EmergencyFacility[]
 > {
-  const response = await fetch(
-    `${BACKEND_URL}/api/emergency-locations`
-  );
+  try {
+    const apiUrl =
+      `${BACKEND_URL}/api/emergency-locations`;
 
-  if (!response.ok) {
-    throw new Error('Failed to load emergency locations');
+    console.log(
+      'Fetching emergency locations from:',
+      apiUrl
+    );
+
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json'
+      }
+    });
+
+    console.log(
+      'Emergency API response status:',
+      response.status
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to load emergency locations. Status: ${response.status}`
+      );
+    }
+
+    const data: BackendEmergencyResponse =
+      await response.json();
+
+    console.log(
+      'Emergency locations received:',
+      data
+    );
+
+    if (!data.locations || !Array.isArray(data.locations)) {
+      throw new Error(
+        'Invalid emergency locations data received'
+      );
+    }
+
+    return data.locations.map(mapBackendFacility);
+
+  } catch (error) {
+    console.error(
+      'Emergency locations backend connection error:',
+      error
+    );
+
+    throw error;
   }
-
-  const data: BackendEmergencyResponse =
-    await response.json();
-
-  return data.locations.map(mapBackendFacility);
 }
