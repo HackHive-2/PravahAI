@@ -129,21 +129,21 @@ export const EmergencyLocationsView: React.FC<
     switch (status) {
       case 'OPEN':
         return (
-          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#2D5A43]/10 text-[#2D5A43] border border-[#2D5A43]/30">
+          <span className="px-2 py-0.5 rounded-xl text-[9px] font-sans font-bold uppercase tracking-wider bg-[#18794E]/10 text-[#18794E] border border-[#18794E]/30">
             OPEN &bull; ACCEPTING
           </span>
         );
 
       case 'READY':
         return (
-          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#8B5E3C]/10 text-[#8B5E3C] border border-[#8B5E3C]/30">
+          <span className="px-2 py-0.5 rounded-xl text-[9px] font-sans font-bold uppercase tracking-wider bg-[#087F8C]/10 text-[#087F8C] border border-[#087F8C]/30">
             STANDBY READY
           </span>
         );
 
       case 'HIGH_CAPACITY':
         return (
-          <span className="px-2 py-0.5 rounded-md text-[9px] font-sans font-bold uppercase tracking-wider bg-[#C97A2C]/10 text-[#C97A2C] border border-[#C97A2C]/30">
+          <span className="px-2 py-0.5 rounded-xl text-[9px] font-sans font-bold uppercase tracking-wider bg-[#C05621]/10 text-[#C05621] border border-[#C05621]/30">
             NEAR CAPACITY
           </span>
         );
@@ -156,22 +156,22 @@ export const EmergencyLocationsView: React.FC<
     switch (category) {
       case 'RELIEF_CENTRE':
         return (
-          <Building2 className="w-4 h-4 text-[#2D5A43]" />
+          <Building2 className="w-4 h-4 text-[#18794E]" />
         );
 
       case 'HOSPITAL':
         return (
-          <Hospital className="w-4 h-4 text-[#8B5E3C]" />
+          <Hospital className="w-4 h-4 text-[#087F8C]" />
         );
 
       case 'SHELTER':
         return (
-          <Shield className="w-4 h-4 text-[#A67C52]" />
+          <Shield className="w-4 h-4 text-[#087F8C]" />
         );
 
       case 'EMERGENCY_SERVICE':
         return (
-          <Flame className="w-4 h-4 text-[#9E2A2B]" />
+          <Flame className="w-4 h-4 text-[#B42318]" />
         );
     }
   };
@@ -180,32 +180,32 @@ export const EmergencyLocationsView: React.FC<
     <div className="space-y-6 pb-12">
 
       {/* Header */}
-      <div className="bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-xl">
+      <div className="bg-white border border-[#C9D9E1] p-6 shadow-sm rounded-xl">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
 
           <div>
-            <div className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-[#A67C52] mb-1">
+            <div className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-[#087F8C] mb-1">
               DISPATCH V &bull; CRITICAL INFRASTRUCTURE
             </div>
 
-            <h1 className="text-2xl lg:text-3xl font-serif font-bold text-[#1A1A1A] tracking-tight flex items-center gap-2.5">
-              <Hospital className="w-6 h-6 text-[#A67C52]" />
+            <h1 className="text-2xl lg:text-3xl font-serif font-bold text-[#17212B] tracking-tight flex items-center gap-2.5">
+              <Hospital className="w-6 h-6 text-[#087F8C]" />
               <span>
                 Verified Municipal Relief Hubs & Shelters
               </span>
             </h1>
 
-            <p className="text-xs text-[#1A1A1A]/70 mt-1 max-w-2xl font-sans leading-relaxed">
+            <p className="text-xs text-[#17212B]/70 mt-1 max-w-2xl font-sans leading-relaxed">
               Emergency locations loaded through the PravahAI backend API.
             </p>
           </div>
 
-          <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/15 text-xs text-[#1A1A1A] space-y-1 rounded-xl max-w-xs">
-            <div className="text-[9px] font-sans uppercase font-bold text-[#8B5E3C] tracking-wider">
+          <div className="p-3.5 bg-white border border-[#C9D9E1] text-xs text-[#17212B] space-y-1 rounded-xl max-w-xs">
+            <div className="text-[9px] font-sans uppercase font-bold text-[#087F8C] tracking-wider">
               Emergency Helplines
             </div>
 
-            <div className="text-xs font-serif font-bold text-[#1A1A1A]">
+            <div className="text-xs font-serif font-bold text-[#17212B]">
               GCC: 1913 &bull; TN SDMA: 1070
             </div>
           </div>
@@ -214,7 +214,7 @@ export const EmergencyLocationsView: React.FC<
       </div>
 
       {/* Filters */}
-      <div className="bg-white border border-[#1A1A1A]/15 p-4 shadow-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="bg-white border border-[#C9D9E1] p-4 shadow-sm rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
 
         <div className="flex flex-wrap items-center gap-1.5">
           {categories.map((category) => (
@@ -223,10 +223,10 @@ export const EmergencyLocationsView: React.FC<
               onClick={() =>
                 setSelectedCategory(category.id)
               }
-              className={`px-3 py-1.5 rounded-lg text-xs font-sans font-bold uppercase tracking-wider transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition-all ${
                 selectedCategory === category.id
-                  ? 'bg-[#1A1A1A] text-[#F4F1EE]'
-                  : 'bg-[#FAF8F5] text-[#1A1A1A]/70 hover:bg-[#EAE6E1] border border-[#1A1A1A]/15'
+                  ? 'bg-[#17212B] text-white'
+                  : 'bg-white text-[#17212B]/70 hover:bg-[#F8FCFD] border border-[#C9D9E1]'
               }`}
             >
               <span>{category.label}</span>
@@ -239,7 +239,7 @@ export const EmergencyLocationsView: React.FC<
         </div>
 
         <div className="relative w-full md:w-64">
-          <Search className="w-3.5 h-3.5 text-[#1A1A1A]/40 absolute left-3 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-[#17212B]/40 absolute left-3 top-2.5" />
 
           <input
             type="text"
@@ -248,7 +248,7 @@ export const EmergencyLocationsView: React.FC<
               setSearchQuery(e.target.value)
             }
             placeholder="Search facility name / ward..."
-            className="w-full pl-8 pr-3 py-1.5 bg-[#FAF8F5] border border-[#1A1A1A]/20 text-xs font-sans text-[#1A1A1A] placeholder-[#1A1A1A]/40 focus:outline-none focus:border-[#A67C52] rounded-xl"
+            className="w-full pl-8 pr-3 py-1.5 bg-white border border-[#C9D9E1] text-xs font-sans text-[#17212B] placeholder-[#17212B]/40 focus:outline-none focus:border-[#087F8C] rounded-xl"
           />
         </div>
 
@@ -256,8 +256,8 @@ export const EmergencyLocationsView: React.FC<
 
       {/* Loading */}
       {loading && (
-        <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center shadow-sm rounded-xl">
-          <p className="text-sm font-serif font-bold text-[#1A1A1A]">
+        <div className="bg-white border border-[#C9D9E1] p-8 text-center shadow-sm rounded-xl">
+          <p className="text-sm font-serif font-bold text-[#17212B]">
             Loading emergency locations from PravahAI backend...
           </p>
         </div>
@@ -280,7 +280,7 @@ export const EmergencyLocationsView: React.FC<
           <div className="lg:col-span-7 space-y-3">
 
             {filteredFacilities.length === 0 && (
-              <div className="bg-white border border-[#1A1A1A]/15 p-8 text-center rounded-xl">
+              <div className="bg-white border border-[#C9D9E1] p-8 text-center rounded-xl">
                 No emergency facilities found.
               </div>
             )}
@@ -298,8 +298,8 @@ export const EmergencyLocationsView: React.FC<
                     }
                     className={`cursor-pointer bg-white p-5 transition-all border shadow-sm rounded-xl flex flex-col justify-between ${
                       isSelected
-                        ? 'border-[#A67C52] ring-1 ring-[#A67C52]'
-                        : 'border-[#1A1A1A]/15 hover:border-[#1A1A1A]/40'
+                        ? 'border-[#087F8C] ring-1 ring-[#087F8C]'
+                        : 'border-[#C9D9E1] hover:border-[#17212B]/40'
                     }`}
                   >
 
@@ -309,7 +309,7 @@ export const EmergencyLocationsView: React.FC<
 
                         <div className="flex items-start gap-3">
 
-                          <div className="p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg shrink-0">
+                          <div className="p-2.5 bg-white border border-[#C9D9E1] rounded-xl shrink-0">
                             {getCategoryIcon(
                               facility.category
                             )}
@@ -319,7 +319,7 @@ export const EmergencyLocationsView: React.FC<
 
                             <div className="flex flex-wrap items-center gap-2 mb-1">
 
-                              <span className="text-[9px] font-mono text-[#A67C52] font-bold">
+                              <span className="text-[9px] font-mono text-[#087F8C] font-bold">
                                 RANK #{index + 1}
                               </span>
 
@@ -328,7 +328,7 @@ export const EmergencyLocationsView: React.FC<
                               )}
 
                               {facility.verified && (
-                                <span className="flex items-center gap-1 text-[9px] font-sans font-bold uppercase tracking-wider text-[#2D5A43]">
+                                <span className="flex items-center gap-1 text-[9px] font-sans font-bold uppercase tracking-wider text-[#18794E]">
                                   <ShieldCheck className="w-3 h-3" />
                                   <span>
                                     BACKEND DATA
@@ -338,11 +338,11 @@ export const EmergencyLocationsView: React.FC<
 
                             </div>
 
-                            <h3 className="text-base font-serif font-bold text-[#1A1A1A]">
+                            <h3 className="text-base font-serif font-bold text-[#17212B]">
                               {facility.name}
                             </h3>
 
-                            <p className="text-xs text-[#1A1A1A]/65 mt-0.5 font-sans">
+                            <p className="text-xs text-[#17212B]/65 mt-0.5 font-sans">
                               {facility.address}
                             </p>
 
@@ -351,46 +351,46 @@ export const EmergencyLocationsView: React.FC<
                         </div>
 
                         <div className="text-right shrink-0">
-                          <div className="text-xl font-serif font-bold text-[#1A1A1A]">
+                          <div className="text-xl font-serif font-bold text-[#17212B]">
                             {facility.capacity.total}
                           </div>
 
-                          <div className="text-[9px] text-[#1A1A1A]/50 font-sans">
+                          <div className="text-[9px] text-[#17212B]/50 font-sans">
                             capacity
                           </div>
                         </div>
 
                       </div>
 
-                      <div className="grid grid-cols-3 gap-2 my-3 p-2.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg text-xs">
+                      <div className="grid grid-cols-3 gap-2 my-3 p-2.5 bg-[#E7F1F5] border border-[#D6E3E8] rounded-xl text-xs">
 
                         <div>
-                          <span className="text-[9px] font-sans uppercase font-bold text-[#1A1A1A]/50 block">
+                          <span className="text-[9px] font-sans uppercase font-bold text-[#17212B]/50 block">
                             Risk
                           </span>
 
-                          <span className="text-[11px] font-serif font-bold text-[#8B5E3C]">
+                          <span className="text-[11px] font-serif font-bold text-[#087F8C]">
                             {facility.surroundingRiskLevel}
                           </span>
                         </div>
 
                         <div>
-                          <span className="text-[9px] font-sans uppercase font-bold text-[#1A1A1A]/50 block">
+                          <span className="text-[9px] font-sans uppercase font-bold text-[#17212B]/50 block">
                             Capacity
                           </span>
 
-                          <span className="text-[11px] font-serif font-semibold text-[#1A1A1A]">
+                          <span className="text-[11px] font-serif font-semibold text-[#17212B]">
                             {facility.capacity.current} /{' '}
                             {facility.capacity.total}
                           </span>
                         </div>
 
                         <div>
-                          <span className="text-[9px] font-sans uppercase font-bold text-[#1A1A1A]/50 block">
+                          <span className="text-[9px] font-sans uppercase font-bold text-[#17212B]/50 block">
                             Access
                           </span>
 
-                          <span className="text-[11px] font-serif font-bold text-[#2D5A43]">
+                          <span className="text-[11px] font-serif font-bold text-[#18794E]">
                             {facility.accessibilityScore}%
                           </span>
                         </div>
@@ -399,10 +399,10 @@ export const EmergencyLocationsView: React.FC<
 
                     </div>
 
-                    <div className="pt-2.5 border-t border-[#1A1A1A]/10 flex items-center justify-between text-xs">
+                    <div className="pt-2.5 border-t border-[#D6E3E8] flex items-center justify-between text-xs">
 
-                      <div className="flex items-center gap-1.5 text-[#1A1A1A]/70 font-mono text-[11px]">
-                        <Phone className="w-3.5 h-3.5 text-[#A67C52]" />
+                      <div className="flex items-center gap-1.5 text-[#17212B]/70 font-mono text-[11px]">
+                        <Phone className="w-3.5 h-3.5 text-[#087F8C]" />
                         <span>{facility.contact}</span>
                       </div>
 
@@ -418,7 +418,7 @@ export const EmergencyLocationsView: React.FC<
                             );
                           }
                         }}
-                        className="flex items-center gap-1 text-xs font-sans font-bold uppercase tracking-wider text-[#A67C52] hover:text-[#8B5E3C] transition-colors"
+                        className="flex items-center gap-1 text-xs font-sans font-bold uppercase tracking-wider text-[#087F8C] hover:text-[#087F8C] transition-colors"
                       >
                         <span>Plan Route Here</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -434,22 +434,22 @@ export const EmergencyLocationsView: React.FC<
           </div>
 
           {/* Selected Facility */}
-          <div className="lg:col-span-5 bg-white border border-[#1A1A1A]/15 p-6 shadow-sm rounded-xl flex flex-col justify-between space-y-4">
+          <div className="lg:col-span-5 bg-white border border-[#C9D9E1] p-6 shadow-sm rounded-xl flex flex-col justify-between space-y-4">
 
             {selectedFacility ? (
               <>
                 <div>
 
-                  <div className="flex items-center gap-2 border-b border-[#1A1A1A]/10 pb-3">
+                  <div className="flex items-center gap-2 border-b border-[#D6E3E8] pb-3">
 
-                    <Hospital className="w-5 h-5 text-[#A67C52]" />
+                    <Hospital className="w-5 h-5 text-[#087F8C]" />
 
                     <div>
-                      <h3 className="text-base font-serif font-bold text-[#1A1A1A]">
+                      <h3 className="text-base font-serif font-bold text-[#17212B]">
                         Facility Emergency Dossier
                       </h3>
 
-                      <span className="text-[11px] text-[#1A1A1A]/60 font-sans">
+                      <span className="text-[11px] text-[#17212B]/60 font-sans">
                         Loaded from PravahAI Backend
                       </span>
                     </div>
@@ -459,43 +459,43 @@ export const EmergencyLocationsView: React.FC<
                   <div className="my-4 space-y-3.5">
 
                     <div>
-                      <h2 className="text-xl font-serif font-bold text-[#1A1A1A]">
+                      <h2 className="text-xl font-serif font-bold text-[#17212B]">
                         {selectedFacility.name}
                       </h2>
 
-                      <p className="text-xs text-[#1A1A1A]/70 mt-1 font-sans">
+                      <p className="text-xs text-[#17212B]/70 mt-1 font-sans">
                         {selectedFacility.address}
                       </p>
                     </div>
 
-                    <div className="p-3.5 bg-[#FAF8F5] border border-[#1A1A1A]/10 rounded-lg space-y-2 text-xs">
+                    <div className="p-3.5 bg-[#E7F1F5] border border-[#D6E3E8] rounded-xl space-y-2 text-xs">
 
                       <div className="flex items-center justify-between font-sans">
-                        <span className="text-[#1A1A1A]/60">
+                        <span className="text-[#17212B]/60">
                           Data Source:
                         </span>
 
-                        <strong className="text-[#2D5A43] font-serif font-bold">
+                        <strong className="text-[#18794E] font-serif font-bold">
                           PravahAI Backend API
                         </strong>
                       </div>
 
                       <div className="flex items-center justify-between font-sans">
-                        <span className="text-[#1A1A1A]/60">
+                        <span className="text-[#17212B]/60">
                           Operational Status:
                         </span>
 
-                        <span className="font-serif font-bold text-[#1A1A1A]">
+                        <span className="font-serif font-bold text-[#17212B]">
                           {selectedFacility.status}
                         </span>
                       </div>
 
                       <div className="flex items-center justify-between font-sans">
-                        <span className="text-[#1A1A1A]/60">
+                        <span className="text-[#17212B]/60">
                           Capacity:
                         </span>
 
-                        <span className="font-mono text-[#A67C52] font-bold">
+                        <span className="font-mono text-[#087F8C] font-bold">
                           {selectedFacility.capacity.current} /{' '}
                           {selectedFacility.capacity.total}
                         </span>
@@ -507,7 +507,7 @@ export const EmergencyLocationsView: React.FC<
 
                 </div>
 
-                <div className="pt-3 border-t border-[#1A1A1A]/10 space-y-2">
+                <div className="pt-3 border-t border-[#D6E3E8] space-y-2">
 
                   <button
                     onClick={() => {
@@ -519,16 +519,16 @@ export const EmergencyLocationsView: React.FC<
                         );
                       }
                     }}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#1A1A1A] hover:bg-[#333333] text-[#F4F1EE] text-xs font-sans font-bold uppercase tracking-wider rounded-xl shadow-sm transition-all"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#102A43] hover:bg-[#0B1F33] text-white text-xs font-sans font-bold uppercase tracking-wider rounded-xl shadow-sm transition-all"
                   >
-                    <Navigation className="w-4 h-4 text-[#A67C52]" />
+                    <Navigation className="w-4 h-4 text-[#087F8C]" />
 
                     <span>
                       Route to this Location
                     </span>
                   </button>
 
-                  <div className="text-center text-[10px] text-[#1A1A1A]/50 italic font-serif">
+                  <div className="text-center text-[10px] text-[#17212B]/50 italic font-serif">
                     Emergency facility information is
                     served through the PravahAI backend
                     prototype API.
@@ -537,7 +537,7 @@ export const EmergencyLocationsView: React.FC<
                 </div>
               </>
             ) : (
-              <div className="text-center text-sm text-[#1A1A1A]/60">
+              <div className="text-center text-sm text-[#17212B]/60">
                 Select an emergency facility.
               </div>
             )}
