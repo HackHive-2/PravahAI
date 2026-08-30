@@ -39,8 +39,8 @@
     --pravah-safe: #18794E;
     --pravah-safe-soft: #E8F6EF;
 
-    /* Accent */
-    --pravah-accent: #D49A3A;
+    /* Accent - Professional Intelligence Teal */
+--pravah-accent: #2F6F7E;
   }
 
   html {
@@ -54,7 +54,7 @@
 
     color: var(--pravah-text);
 
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Raleway', sans-serif;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -74,6 +74,10 @@
       Times,
       serif;
   }
+
+  .font-sans {
+  font-family: 'Raleway', sans-serif !important;
+}
 
   button,
   input,
