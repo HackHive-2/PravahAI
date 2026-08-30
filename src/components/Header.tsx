@@ -10,6 +10,8 @@ import {
   Check,
 } from 'lucide-react';
 
+import pravahaiLogo from '../assets/pravahai-logo.png';
+
 import { ChennaiNeighbourhood } from '../types';
 import { CHENNAI_NEIGHBOURHOODS } from '../data/chennaiData';
 
@@ -131,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <div className="flex items-center gap-3">
 
-            {/* Logo */}
+            {/* PravahAI Logo */}
             <div
               className="
                 group
@@ -167,21 +169,20 @@ export const Header: React.FC<HeaderProps> = ({
               "
             >
 
-              <ShieldAlert
-                className="
-                  w-5
-                  h-5
+              <img
+  src={pravahaiLogo}
+  alt="PravahAI"
+  className="
+    w-9
+    h-9
+    object-contain
 
-                  text-[#D49A3A]
+    transition-all
+    duration-300
 
-                  transition-all
-                  duration-300
-
-                  group-hover:scale-110
-                  group-hover:rotate-6
-                "
-              />
-
+    group-hover:scale-110
+  "
+/>
               {/* Live indicator */}
               <div
                 className="
@@ -611,6 +612,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             </button>
 
+            {/* Dropdown Menu */}
             {/* =================================================
                 DROPDOWN MENU
             ================================================== */}
@@ -778,6 +780,28 @@ export const Header: React.FC<HeaderProps> = ({
                       >
 
                         <div className="min-w-0">
+
+                    <span
+                      className={`
+                        text-[9px]
+                        font-sans
+                        px-1.5
+                        py-0.5
+                        font-bold
+                        uppercase
+                        tracking-wider
+
+                        ${
+                          item.baseRisk === 'CRITICAL'
+                            ? 'text-[#9E2A2B]'
+                            : item.baseRisk === 'HIGH'
+                            ? 'text-[#C97A2C]'
+                            : 'text-[#2D5A43]'
+                        }
+                      `}
+                    >
+                                                     {item.score}/100
+                    </span>
 
                           <div
                             className={`
@@ -948,6 +972,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="
                 w-3.5
                 h-3.5
+                text-amber-200
 
                 text-[#D49A3A]
 
@@ -1023,11 +1048,6 @@ export const Header: React.FC<HeaderProps> = ({
                 text-[#087F8C]
 
                 animate-pulse
-
-                transition-transform
-                duration-200
-
-                group-hover:scale-125
               "
             />
 
@@ -1086,14 +1106,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="
                 w-4
                 h-4
-
-                text-[#D49A3A]
-
-                transition-all
-                duration-200
-
-                group-hover:scale-110
-                group-hover:rotate-3
+                text-[#A67C52]
               "
             />
 

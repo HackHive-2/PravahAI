@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Sidebar, NavTabId } from './components/Sidebar';
 import { DemoTourBar } from './components/DemoTourBar';
-
 import { OverviewView } from './components/OverviewView';
 import { RiskMapView } from './components/RiskMapView';
 import { RoutePlannerView } from './components/RoutePlannerView';
@@ -32,6 +31,7 @@ import {
 } from './data/chennaiData';
 
 import { apiService } from './services/riskEngine';
+import { submitReportToBackend } from './services/backendApi';
 
 export function App() {
   // =========================================================
@@ -39,25 +39,33 @@ export function App() {
   // =========================================================
 
   const [selectedNeighbourhood, setSelectedNeighbourhood] =
-    useState<ChennaiNeighbourhood>(CHENNAI_NEIGHBOURHOODS[0]);
+    useState<ChennaiNeighbourhood>(
+      CHENNAI_NEIGHBOURHOODS[0]
+    );
 
   const [activeTab, setActiveTab] =
     useState<NavTabId>('overview');
 
   const [activeRiskCell, setActiveRiskCell] =
-    useState<RiskCell>(INITIAL_RISK_CELLS[0]);
+    useState<RiskCell>(
+      INITIAL_RISK_CELLS[0]
+    );
 
   const [citizenReports, setCitizenReports] =
-    useState<CitizenReport[]>(INITIAL_CITIZEN_REPORTS);
+    useState<CitizenReport[]>(
+      INITIAL_CITIZEN_REPORTS
+    );
 
   const [toasts, setToasts] =
     useState<ToastMessage[]>([]);
 
   const [highlightRouteId, setHighlightRouteId] =
-    useState<'FASTEST' | 'LOWER_RISK' | 'ALL'>('ALL');
+    useState<
+      'FASTEST' | 'LOWER_RISK' | 'ALL'
+    >('ALL');
 
   // =========================================================
-  // SIH PRESENTATION TOUR STATE
+  // SIH DEMO TOUR STATE
   // =========================================================
 
   const [tourActive, setTourActive] =
@@ -67,7 +75,7 @@ export function App() {
     useState<number>(0);
 
   // =========================================================
-  // TOAST SYSTEM
+  // TOAST HELPERS
   // =========================================================
 
   const addToast = (
@@ -82,18 +90,28 @@ export function App() {
       type,
     };
 
-    setToasts((prev) => [...prev, newToast]);
+    setToasts((prev) => [
+      ...prev,
+      newToast,
+    ]);
 
     setTimeout(() => {
       setToasts((prev) =>
-        prev.filter((toast) => toast.id !== newToast.id)
+        prev.filter(
+          (toast) =>
+            toast.id !== newToast.id
+        )
       );
     }, 4500);
   };
 
-  const handleDismissToast = (id: string) => {
+  const handleDismissToast = (
+    id: string
+  ) => {
     setToasts((prev) =>
-      prev.filter((toast) => toast.id !== id)
+      prev.filter(
+        (toast) => toast.id !== id
+      )
     );
   };
 
@@ -104,13 +122,17 @@ export function App() {
   const handleSelectNeighbourhood = (
     neighbourhood: ChennaiNeighbourhood
   ) => {
-    setSelectedNeighbourhood(neighbourhood);
+    setSelectedNeighbourhood(
+      neighbourhood
+    );
 
     const matchedCell =
       INITIAL_RISK_CELLS.find((cell) =>
         cell.areaName
           .toLowerCase()
-          .includes(neighbourhood.name.toLowerCase())
+          .includes(
+            neighbourhood.name.toLowerCase()
+          )
       ) || INITIAL_RISK_CELLS[0];
 
     setActiveRiskCell(matchedCell);
@@ -126,18 +148,25 @@ export function App() {
   // RISK CELL SELECTION
   // =========================================================
 
-  const handleSelectCell = (cell: RiskCell) => {
+  const handleSelectCell = (
+    cell: RiskCell
+  ) => {
     setActiveRiskCell(cell);
 
     const matchedNeighbourhood =
-      CHENNAI_NEIGHBOURHOODS.find((neighbourhood) =>
-        cell.areaName
-          .toLowerCase()
-          .includes(neighbourhood.name.toLowerCase())
+      CHENNAI_NEIGHBOURHOODS.find(
+        (neighbourhood) =>
+          cell.areaName
+            .toLowerCase()
+            .includes(
+              neighbourhood.name.toLowerCase()
+            )
       );
 
     if (matchedNeighbourhood) {
-      setSelectedNeighbourhood(matchedNeighbourhood);
+      setSelectedNeighbourhood(
+        matchedNeighbourhood
+      );
     }
   };
 
@@ -155,38 +184,71 @@ export function App() {
       | 'verificationStatus'
     >
   ) => {
-    const createdReport =
-      await apiService.submitCitizenReport(reportData);
+    try {
+      const backendResponse =
+        await submitReportToBackend({
+          location: reportData.areaName,
+          description:
+            reportData.description,
+          severity:
+            reportData.reportedSeverity,
+        });
 
-    setCitizenReports((prev) => [
-      createdReport,
-      ...prev,
-    ]);
+      const createdReport: CitizenReport = {
+        ...reportData,
+        id: backendResponse.report.id,
+        timestamp:
+          backendResponse.report.submitted_at,
+        evidenceConfidence: 'MODERATE',
+        citizenEvidenceScore: 50,
+        verificationStatus: 'PENDING',
+      };
 
-    // Update citizen evidence score
-    if (
-      activeRiskCell.areaName
-        .toLowerCase()
-        .includes(createdReport.areaName.toLowerCase())
-    ) {
-      setActiveRiskCell((prev) => ({
+      setCitizenReports((prev) => [
+        createdReport,
         ...prev,
-        citizenScore: Math.min(
-          100,
-          prev.citizenScore + 8
-        ),
-        riskScore: Math.min(
-          100,
-          prev.riskScore + 2
-        ),
-      }));
-    }
+      ]);
 
-    addToast(
-      'Flood Evidence Submitted & Validated',
-      `Report ${createdReport.id} in ${createdReport.areaName} processed by AI validation pipeline (${createdReport.aiFloodConfidence}% confidence). Local evidence score updated.`,
-      'success'
-    );
+      // Refresh active cell score
+      if (
+        activeRiskCell.areaName
+          .toLowerCase()
+          .includes(
+            createdReport.areaName.toLowerCase()
+          )
+      ) {
+        setActiveRiskCell((prev) => ({
+          ...prev,
+          citizenScore: Math.min(
+            100,
+            prev.citizenScore + 8
+          ),
+          riskScore: Math.min(
+            100,
+            prev.riskScore + 2
+          ),
+        }));
+      }
+
+      addToast(
+        'Flood Report Submitted',
+        `Report ${createdReport.id} in ${createdReport.areaName} was successfully submitted to the PravahAI backend.`,
+        'success'
+      );
+    } catch (error) {
+      console.error(
+        'Backend report submission failed:',
+        error
+      );
+
+      addToast(
+        'Report Submission Failed',
+        error instanceof Error
+          ? error.message
+          : 'Could not connect to the PravahAI backend.',
+        'warning'
+      );
+    }
   };
 
   // =========================================================
@@ -243,16 +305,20 @@ export function App() {
     }
 
     const currentTourStep =
-      SIH_DEMO_TOUR_STEPS[tourStepIndex];
+      SIH_DEMO_TOUR_STEPS[
+        tourStepIndex
+      ];
 
     if (!currentTourStep) {
       return;
     }
 
     // Change active screen
-    setActiveTab(currentTourStep.targetView);
+    setActiveTab(
+      currentTourStep.targetView
+    );
 
-    // Keep the presentation focused on Velachery
+    // Keep presentation focused on Velachery
     if (
       tourStepIndex === 1 ||
       tourStepIndex === 2 ||
@@ -263,7 +329,10 @@ export function App() {
       const velachery =
         CHENNAI_NEIGHBOURHOODS[0];
 
-      setSelectedNeighbourhood(velachery);
+      setSelectedNeighbourhood(
+        velachery
+      );
+
       setActiveRiskCell(
         INITIAL_RISK_CELLS[0]
       );
@@ -276,7 +345,10 @@ export function App() {
     ) {
       setHighlightRouteId('ALL');
     }
-  }, [tourStepIndex, tourActive]);
+  }, [
+    tourStepIndex,
+    tourActive,
+  ]);
 
   // =========================================================
   // COUNTERS
@@ -285,7 +357,8 @@ export function App() {
   const pendingReportsCount =
     citizenReports.filter(
       (report) =>
-        report.verificationStatus === 'PENDING'
+        report.verificationStatus ===
+        'PENDING'
     ).length;
 
   const criticalZonesCount =
@@ -328,7 +401,6 @@ export function App() {
         overflow-x-hidden
       "
     >
-
       {/* =====================================================
           HEADER
       ====================================================== */}
@@ -342,7 +414,9 @@ export function App() {
         }
         tourActive={tourActive}
         onToggleTour={() =>
-          setTourActive((prev) => !prev)
+          setTourActive(
+            (prev) => !prev
+          )
         }
         unreadAlertCount={2}
         onOpenAlerts={() =>
@@ -359,7 +433,9 @@ export function App() {
 
       {tourActive && (
         <DemoTourBar
-          currentStepIndex={tourStepIndex}
+          currentStepIndex={
+            tourStepIndex
+          }
           onSetStepIndex={
             setTourStepIndex
           }
@@ -392,7 +468,6 @@ export function App() {
           min-w-0
         "
       >
-
         {/* =================================================
             SIDEBAR
         ================================================== */}
@@ -448,10 +523,9 @@ export function App() {
             overflow-x-hidden
           "
         >
-
-          {/* =================================================
+          {/* =============================================
               OVERVIEW
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'overview' && (
             <OverviewView
@@ -473,9 +547,9 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               RISK MAP
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'map' && (
             <RiskMapView
@@ -497,13 +571,15 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               ROUTE PLANNER
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'route' && (
             <RoutePlannerView
-              onInspectRouteOnMap={(routeId) => {
+              onInspectRouteOnMap={(
+                routeId
+              ) => {
                 setHighlightRouteId(
                   routeId
                 );
@@ -513,9 +589,9 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               CITIZEN REPORT
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'report' && (
             <CitizenReportView
@@ -528,17 +604,15 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               EMERGENCY LOCATIONS
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'emergency' && (
             <EmergencyLocationsView
               onNavigateToRouteWithDest={(
                 facilityName
               ) => {
-                // facilityName is intentionally received
-                // for future route integration.
                 void facilityName;
 
                 navigateToTab('route');
@@ -546,9 +620,9 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               OFFICIAL ALERTS
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'alerts' && (
             <OfficialAlertsView
@@ -561,9 +635,9 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               ADMIN DASHBOARD
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'dashboard' && (
             <AdminDashboardView
@@ -597,22 +671,23 @@ export function App() {
             />
           )}
 
-          {/* =================================================
+          {/* =============================================
               METHODOLOGY
-          ================================================== */}
+          ============================================== */}
 
           {activeTab === 'methodology' && (
             <DataMethodologyView />
           )}
 
-          {/* =================================================
+          {/* =============================================
               APPLICATION FOOTER
-          ================================================== */}
+          ============================================== */}
 
           <footer
             className="
               mt-10
               pt-5
+
               border-t
               border-[#1A1A1A]/10
 
@@ -632,8 +707,8 @@ export function App() {
             "
           >
             <span>
-              PravahAI • AI-Assisted Hyperlocal
-              Flood Intelligence
+              PravahAI • AI-Assisted
+              Hyperlocal Flood Intelligence
             </span>
 
             <span
@@ -647,7 +722,6 @@ export function App() {
               2026 HackHive • SIH
             </span>
           </footer>
-
         </main>
       </div>
 
